@@ -121,6 +121,11 @@ Check file ***docker-compose.yml***
 ```
 $ docker-compose up -d
 ```
+#### Alternatively
+```
+$  docker-compose build
+$  docker-compose up
+```
 Visit http://localhost:8082/ to check
 
 
