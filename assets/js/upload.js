@@ -55,7 +55,7 @@ function checkSeqValid() {
         fasta = lines.join('').trim();
 
         if (!fasta) { // is it empty whatever we collected ? re-check not efficient 
-            $('#errorModalBody').text("Query must contain amino acid code sequence.");
+            $('#errorModalBody').text("Empty sequence detected! Please make sure the sequence starts in a new line after the discription line.");
             $('#errorModal').modal('show');
             return false;
         }

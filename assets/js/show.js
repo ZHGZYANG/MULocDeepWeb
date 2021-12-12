@@ -1,7 +1,7 @@
 /* -------------------------------------------------------------------------- */
 /*                                Show js File                                */
-/*								Author: Yifu Yao							  */
-/*							Last Updated Date: 6/14/2020 					  */
+/*                              Author: Yifu Yao                              */
+/*                          Last Updated Date: 6/14/2020                      */
 /* -------------------------------------------------------------------------- */
 
 $(function () {
@@ -158,8 +158,8 @@ $(".selectpicker").change(function () {
             data: [{
                 type: "column",
                 showInLegend: true, 
-		        legendMarkerColor: "grey",
-		        legendText: "Sub Cellular",
+                legendMarkerColor: "grey",
+                legendText: "Sub Cellular",
                 dataPoints: cellularCChartData
             }]
         });
@@ -265,14 +265,20 @@ $(".selectpicker").change(function () {
         organellarChartContainer.classList.add("chart_container");
 
         var organellarChartData = [];
+        console.log(organellar[0]);
+        
         for (var key in organellar[id]) {
             let temp = {
                 label: key.replace(/_/g, ' '),
                 y: organellar[id][key]
             }
-            if (temp.label != 'Prediction')
+            if (temp.label != 'Prediction' && temp.label != 'Secreted exosome')
                 organellarChartData.push(temp);
         }
+        console.log(organellarChartData[0]);
+        
+        
+        
         
         CanvasJS.addColorSet("organellarColorSet",
         [
@@ -287,11 +293,15 @@ $(".selectpicker").change(function () {
             theme: "light2",
             zoomEnabled: true,
             exportEnabled: true,
+            axisX:{
+                interval:1,
+                labelAngle:80,
+            },
             data: [{
                 type: "column",
                 showInLegend: true, 
-		        legendMarkerColor: "grey",
-		        legendText: "Sub Organellar",
+                legendMarkerColor: "grey",
+                legendText: "Sub Organellar",
                 dataPoints: organellarChartData
             }]
         });
