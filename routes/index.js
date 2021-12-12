@@ -27,6 +27,49 @@ var curProcess = 0;
 /* --------------------------------- Routers -------------------------------- */
 // Landing page
 router.get("/", function (req, res) {
+	userInfo.findOne({ 'ipAddress': get_client_ip(req) }, function (err, doc) {
+		if (err)
+			console.error(err);
+		if (doc == undefined) {
+			var user = new userInfo({
+				ipAddress: get_client_ip(req),
+				capacity: 0,
+				query: 0,
+				proteins: 0
+			});
+
+			user.save(function (err, u) {
+				if (err)
+					console.error(err);
+				else {
+					console.log("Create a new user: " + get_client_ip(req));
+					console.log("======================================");
+				}
+			})
+			// ------------------
+			// get user location
+			// ------------------
+			// var locURL = "/process/location/";
+			// var locData = {ip: get_client_ip(req)};
+			request("http://ip-api.com/json/" + get_client_ip(req) + "?lang=EN", { json: true }, (err, res, body) => {
+				if (err) { return console.log(err); }
+				var update = { $set: { lat: body.lat, lon: body.lon } };
+				userInfo.updateOne({ 'ipAddress': body.query }, update, function (err, u) {
+					if (err)
+						console.log(err);
+					else {
+						console.log("User info was updated!");
+						console.log("User location: " + body.lat + ", " + body.lon);
+						console.log("======================================");
+					}
+				});
+			});
+		}
+		else {
+			reset_client(doc);
+
+	    } 
+    });
 	// console.log(get_client_ip(req));
 	res.render("UPLOAD");
 });
@@ -334,5 +377,21 @@ function asyncLoopScheduleClean(i, docs, callback) {
 		callback();
 	}
 }
+
+function get_client_ip(req) {
+	var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+	ipStr = ip.split(':');
+	return ipStr[ipStr.length - 1];
+};
+
+function reset_client(doc) {
+	if(doc.query == undefined)
+		doc.query = 0;
+	if(doc.capacity == undefined)
+		doc.capacity = 0;
+	if(doc.proteins == undefined)
+		doc.proteins = 0;
+
+};
 
 module.exports = router;
