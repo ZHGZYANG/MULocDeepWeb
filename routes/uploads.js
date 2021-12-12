@@ -5,7 +5,7 @@
 /* -------------------------------------------------------------------------- */
 
 /* ------------------------------- Parameters ------------------------------- */
-
+var request = require('request');
 var express = require("express");
 var router = express.Router({ mergeParams: true });
 var sd = require("silly-datetime"),
@@ -127,6 +127,7 @@ router.post("/upload/email", function (req, res) {
 	});
 });
 
+
 //Deal with sequence post
 router.post("/upload/sequence", function (req, res) {
 	var sequence = req.body.sequenceInput.trim();
@@ -161,6 +162,7 @@ router.post("/upload/sequence", function (req, res) {
 	// 	var fileSize = stats.size * 30;
 
 	var isEnough = 1;
+
 	userInfo.findOne({ 'ipAddress': get_client_ip(req) }, function (err, doc) {
 		if (err)
 			console.error(err);
@@ -279,6 +281,7 @@ router.post("/upload/sequence", function (req, res) {
 			res.render("OUTSPACE");
 		}
 	});
+ 
 	// });
 });
 

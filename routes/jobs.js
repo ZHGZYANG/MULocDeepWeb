@@ -278,6 +278,7 @@ router.post("/jobs/delete/:id", function (req, res) {
  */
 function get_client_ip(req) {
 	var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+	console.log(ip);
 	ipStr = ip.split(':');
 	return ipStr[ipStr.length - 1];
 };
