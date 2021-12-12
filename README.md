@@ -215,3 +215,5 @@ Visit http://localhost:8082/ to check
 4. Changed schedule cleaning to per day
 ### Version 1.5
 1. Updated schedule cleaning time to UTC 6:00:00
+### Version 1.7
+1. The current version of MULocDeep webserver. Added citation. 
