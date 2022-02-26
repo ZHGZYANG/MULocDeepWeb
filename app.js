@@ -22,15 +22,17 @@ var jobInfo = require("./models/jobInfo"),
 
 /* -------------------------- mongoDB configuration ------------------------- */
 // Docker
-mongoose.connect("mongodb://mulocdeepdb2:65522/mulocdeep2");
+// mongoose.connect("mongodb://mulocdeepdb2:65522/mulocdeep2");
 // Local
-//mongoose.connect("mongodb://localhost:65522/mulocdeep2");
+// mongoose.connect("mongodb://localhost:65522/mulocdeep2");
+mongoose.connect("mongodb://localhost:27017/test");
 
 /* -------------------------- Express configuration ------------------------- */
 // app.enable('trust proxy');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
-app.use(express.static('assets'))
+app.use(express.static('assets'));
+app.use('/public', express.static(__dirname + '/public'));
 
 /* --------------------------------- Routers -------------------------------- */
 app.use(indexRoutes);
@@ -45,11 +47,11 @@ app.get("*", function (req, res) {
 });
 
 app.listen(8083, process.env.IP, function () {
-	console.log("The MULocDeep Server Has Started At: http://localhost:8082/ ...");
+	console.log("The MULocDeep Server Has Started At: http://localhost:8083/ ...");
 	//  When system's version updates, server deletes all invalid jobs records 
 	jobInfo.find({}, function (err, docs) {
 		if (docs != undefined) {
-			asyncloopStartServer(0, docs, function () {
+			asyncloopStartServer(0, docs, function () {	
 				console.log("Server has deleted all invalid jobs...");
 			})
 		}

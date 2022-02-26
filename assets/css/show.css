@@ -134,3 +134,127 @@
     height: 370px;
     width: 100%;
 }
+
+.container_cellImage{
+    padding:1.5vh;
+    margin-bottom: 1.5vh;
+}
+
+.cell_image{
+    width:70%;
+    margin: 0 auto;
+}
+
+.number_Nucleus{
+    width: 10%;
+    position: absolute;
+    top:41%;
+    left:20%;
+    color:#7030a0;
+}
+.number_Nucleus:hover{
+    background-color:rgba(128, 128, 128, 0.3);
+}
+.number_Mitochondria{
+    width: 13%;
+    position: absolute;
+    top: 2.5%;
+    left: 33.5%;
+    color: #f9c002;
+}
+.number_Mitochondria:hover{
+    background-color:rgba(128, 128, 128, 0.3);
+}
+.number_Cell_membrane{
+    width: 15%;
+    position: absolute;
+    top: 14%;
+    left: 24%;
+    color: #2f518f;
+}
+.number_Cell_membrane:hover{
+    background-color:rgba(128, 128, 128, 0.3);
+}
+.number_Endoplasmic_reticulum{
+    width: 21%;
+    position: absolute;
+    top: 25%;
+    left: 17%;
+    color: #4974c0;
+}
+.number_Endoplasmic_reticulum:hover{
+    background-color:rgba(128, 128, 128, 0.3);
+}
+.number_Golgi_apparatus{
+    width: 15%;
+    position: absolute;
+    top: 81%;
+    left: 21.5%;
+    color: #ed7d32;
+}
+.number_Golgi_apparatus:hover{
+    background-color:rgba(128, 128, 128, 0.3);
+}
+.number_Chloroplast{
+    padding-left: 10%;
+    width: 12%;
+    position: absolute;
+    top: 6.5%;
+    left: 72%;
+    color: #70ad47;
+}
+.number_Chloroplast:hover{
+    background-color:rgba(128, 128, 128, 0.3);
+}
+
+.number_Secreted{
+    padding-left: 9%;
+    width: 12%;
+    position: absolute;
+    top: 40%;
+    left: 70%;
+    color: #1a1a1a;
+}
+.number_Secreted:hover{
+    background-color:rgba(128, 128, 128, 0.3);
+}
+
+.number_Cytoplasm{
+    padding-left: 10%;
+    width: 12%;
+    position: absolute;
+    top: 80%;
+    left: 68%;
+    color: #fce49d;
+}
+.number_Cytoplasm:hover{
+    background-color:rgba(128, 128, 128, 0.3);
+}
+
+.number_Lysosome{
+    padding-left: 10%;
+    width: 12%;
+    position: absolute;
+    top: 63.5%;
+    left: 71.5%;
+    color: #c05810;
+}
+.number_Lysosome:hover{
+    background-color:rgba(128, 128, 128, 0.3);
+}
+
+.number_Peroxisome{
+    padding-left: 11%;
+    width: 13%;
+    position: absolute;
+    top: 89%;
+    left: 57%;
+    color: #70ad47;
+}
+.number_Peroxisome:hover{
+    background-color:rgba(128, 128, 128, 0.3);
+}
+
+.number_cell{
+    font-size: 18px;
+}
