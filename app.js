@@ -22,7 +22,10 @@ var jobInfo = require("./models/jobInfo"),
 
 /* -------------------------- mongoDB configuration ------------------------- */
 // Docker
-mongoose.connect("mongodb://mulocdeepdb:65521/mulocdeep");
+// Old command
+//mongoose.connect("mongodb://mulocdeepdb:65521/mulocdeep");
+//Test comman
+mongoose.connect("mongodb://localhost:27017/test");
 // Local
 // mongoose.connect("mongodb://localhost/mulocdeep");
 
@@ -44,8 +47,8 @@ app.get("*", function (req, res) {
 	res.render("404");
 });
 
-app.listen(8082, process.env.IP, function () {
-	console.log("The MULocDeep Server Has Started At: http://localhost:8082/ ...");
+app.listen(8083, process.env.IP, function () {
+	console.log("The MULocDeep Server Has Started At: http://localhost:8083/ ...");
 	//  When system's version updates, server deletes all invalid jobs records 
 	jobInfo.find({}, function (err, docs) {
 		if (docs != undefined) {
