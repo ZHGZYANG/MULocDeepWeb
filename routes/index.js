@@ -32,9 +32,9 @@ router.get("/", function (req, res) {
 });
 
 // Map page
-router.get("/map", function (req, res) {
-	res.render("MAP");
-});
+// router.get("/map", function (req, res) {
+// 	res.render("MAP");
+// });
 
 // Contact page
 router.get("/contact", function (req, res) {

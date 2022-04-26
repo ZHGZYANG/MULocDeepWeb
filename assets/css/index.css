@@ -1,18 +1,27 @@
 #map {
     position: absolute;
-    height: 90%;
+    height: 50%;
     width: 100%;
     left: 0;
     right: 0;
+    top:50%;
+  }
+
+  #map svg {
+    height: min-content !important;
   }
 
 #welcomeCard {
     position: absolute;
-    z-index: 1;
-    top: 30%;
+    z-index: 999;
+    top: 62%;
     left: 0;
     right: 0;
     /* bottom: 0;
     margin: auto; */
-    height: fit-content;
+    /* height: fit-content; */
+}
+
+#map-cont{
+  height: 710px;
 }
