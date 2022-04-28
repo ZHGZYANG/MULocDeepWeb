@@ -47,6 +47,7 @@ var map = new Datamap({
   $("#userNumber").fadeIn(1000);
   var statisticUserURL = '/process/statistic/users';
   $.get(statisticUserURL, function (data, status) {
+    console.log(data);
     $("#userNumber").numberAnimate({num: data.user, speed:3000, symbol:","});
   });
 
@@ -54,6 +55,7 @@ var map = new Datamap({
   $("#queryNumber").fadeIn(2000);
   var statisticQueryURL = '/process/statistic/querys';
   $.get(statisticQueryURL, function (data, status) {
+    console.log(data);
     $("#queryNumber").numberAnimate({num: data.querys, speed:4000, symbol:","});
   });
 
@@ -61,5 +63,6 @@ var map = new Datamap({
   $("#proteinsNumber").fadeIn(3000);
   var statisticQueryURL = '/process/statistic/proteins';
   $.get(statisticQueryURL, function (data, status) {
+    console.log(data);
     $("#proteinsNumber").numberAnimate({num: data.proteins, speed:4000, symbol:","});
   });

@@ -1,27 +1,47 @@
 #map {
     position: absolute;
-    height: 50%;
+    height: 92%;
     width: 100%;
     left: 0;
     right: 0;
-    top:50%;
+    /* top:50%; */
+    z-index: 999;
+    margin-top: -115px;
+    background-color: white !important;
   }
 
   #map svg {
-    height: min-content !important;
+    /* height: min-content !important; */
   }
 
 #welcomeCard {
     position: absolute;
     z-index: 999;
-    top: 62%;
+    top: 20%;
     left: 0;
     right: 0;
     /* bottom: 0;
     margin: auto; */
-    /* height: fit-content; */
+    height: fit-content;
 }
 
 #map-cont{
-  height: 710px;
+  height: 245px;
+  margin: 120px 30px 30px 30px;
+  width: max-content;
 }
+
+.map-welcome{
+  font-size: 6px;
+  max-width: 50% !important;
+}
+
+.mt-number-animate{
+  line-height: 15px;
+  height: 18px;
+}
+
+.mt-number-animate-dom{
+  font-size: x-small;
+}
+
