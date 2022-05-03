@@ -1,19 +1,16 @@
 import os
 import tensorflow as tf
-config = tf.ConfigProto()
-config.gpu_options.per_process_gpu_memory_fraction = 0.8
-tf.Session(config=config)
 import numpy as np
 import keras
 from keras import layers
 from keras import optimizers
 from keras.layers import *
 from keras.models import Model
-from hier_attention_mask import Attention
 from keras import backend as K
 from Bio.Blast.Applications import NcbipsiblastCommandline
 from Bio import SeqIO
 import sys
+from hier_attention_mask import Attention
 
 def convertSampleToPhysicsVector_pca(seq):
     """
@@ -266,7 +263,7 @@ def process_input_train(seq_file,dir):
         processed_num+=1
         print("in loop, processing"+str(processed_num)+"\n")
         pssmfile=dir+seq_record.id+"_pssm.txt"
-        inputfile=dir+'tempseq.fasta'
+        inputfile=dir+seq_record.id+'_tem.fasta'
         seql = len(seq_record)
         if not os.path.exists(pssmfile):
             if os.path.exists(inputfile):
@@ -275,6 +272,7 @@ def process_input_train(seq_file,dir):
             psiblast_cline = NcbipsiblastCommandline(query=inputfile, db='./MULocDeep/db/swissprot/swissprot', num_iterations=3,
                                                      evalue=0.001, out_ascii_pssm=pssmfile, num_threads=4)
             stdout, stderr = psiblast_cline()
+            os.remove(inputfile)
 
 def process_input_user(seq_file,dir):
     processed_num=0
@@ -285,16 +283,17 @@ def process_input_user(seq_file,dir):
         processed_num+=1
         print("in loop, processing"+str(processed_num)+"\n")
         pssmfile=dir+str(index)+"_pssm.txt"
-        inputfile=dir+'tempseq.fasta'
+        inputfile=dir+str(index)+'_tem.fasta'
         seql = len(seq_record)
         if not os.path.exists(pssmfile):
             if os.path.exists(inputfile):
                 os.remove(inputfile)
             SeqIO.write(seq_record, inputfile, 'fasta')
             try:
-              psiblast_cline = NcbipsiblastCommandline(query=inputfile, db='./MULocDeep/db/swissprot/swissprot', num_iterations=3,
+              psiblast_cline = NcbipsiblastCommandline(query=inputfile, db='./db/swissprot/swissprot', num_iterations=3,
                                                      evalue=0.001, out_ascii_pssm=pssmfile, num_threads=4)
               stdout, stderr = psiblast_cline()
+              os.remove(inputfile)
             except:
               print("invalid protein: "+seq_record)
 
@@ -311,18 +310,16 @@ def var_model(train_x):
     mask_input.append(l_indrop)
     mask_input.append(input_mask)
     mask_layer1 = Lambda(mask_func)(mask_input)
-
-    x1 = layers.Bidirectional(CuDNNLSTM(dim_lstm, kernel_initializer="orthogonal", recurrent_initializer="orthogonal",
-                                        return_sequences=True), merge_mode='sum')(mask_layer1)  # [?,seq_len,dim_lstm]
+    x1 = layers.Bidirectional(LSTM(dim_lstm, kernel_initializer="orthogonal", recurrent_initializer="orthogonal",
+                                       return_sequences=True), merge_mode='sum')(mask_layer1)  # [?,seq_len,dim_lstm]
     x1bn = layers.BatchNormalization()(x1)
     x1d = layers.Dropout(drop_hid)(x1bn)
     mask_input = []
     mask_input.append(x1d)
     mask_input.append(input_mask)
     mask_layer2 = Lambda(mask_func)(mask_input)
-
-    x2 = layers.Bidirectional(CuDNNLSTM(dim_lstm, kernel_initializer="orthogonal", recurrent_initializer="orthogonal",
-                                        return_sequences=True), merge_mode='sum')(mask_layer2)  # [?,seq_len,dim_lstm]
+    x2 = layers.Bidirectional(LSTM(dim_lstm, kernel_initializer="orthogonal", recurrent_initializer="orthogonal",
+                                       return_sequences=True), merge_mode='sum')(mask_layer2)  # [?,seq_len,dim_lstm]
     x2bn = layers.BatchNormalization()(x2)
     x2d = layers.Dropout(drop_hid)(x2bn)
     mask_input = []

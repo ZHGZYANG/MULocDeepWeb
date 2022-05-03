@@ -6,14 +6,15 @@ from keras.layers import *
 from keras.models import Model
 from hier_attention_mask import Attention
 from keras import backend as K
-from Bio.Blast.Applications import NcbipsiblastCommandline
-from Bio import SeqIO
+#from Bio.Blast.Applications import NcbipsiblastCommandline
+#from Bio import SeqIO
 from keras.metrics import categorical_accuracy, binary_crossentropy
 import matplotlib.pyplot as plt
 import os
 import calendar
 import time
 import argparse
+import sys
 from utils import *
 
 
@@ -27,10 +28,9 @@ def endpad(seqfile, pssmdir):
         line = f.readline()
         index=0
         while line != '':
-            #pssmfile = pssmdir + line[1:].strip() + "_pssm.txt"
             pssmfile = pssmdir + str(index) + "_pssm.txt"
-            print("doing " + pssmfile + "\n")
             if os.path.exists(pssmfile):
+                print("found " + pssmfile + "\n")
                 id = line.strip()[1:]
                 ids.append(id)
                 seq = f.readline().strip()
@@ -50,6 +50,7 @@ def endpad(seqfile, pssmdir):
                     new_pssms.append(pssm)
                     mask_seq.append(gen_mask_mat(1000, 0))
             else:
+                print("using Blosum62\n")
                 id = line.strip()[1:]
                 ids.append(id)
                 seq = f.readline().strip()
@@ -73,10 +74,6 @@ def endpad(seqfile, pssmdir):
         x = np.array(new_pssms)
         mask = np.array(mask_seq)
         return [x, mask,ids]
-
-
-
-
 
 
 
@@ -126,7 +123,7 @@ def main():
        if not existPSSM[len(existPSSM) - 1] == "/":
          existPSSM = existPSSM + "/"
 
-    if ((existPSSM=="")or(not os.path.exists(existPSSM))):
+    if (existPSSM==""):
         ts = calendar.timegm(time.gmtime())
         pssmdir=outputdir+str(ts)+"_pssm/"
         if not os.path.exists(pssmdir):
@@ -142,9 +139,7 @@ def main():
 
     for foldnum in range(8):
         model_big, model_small = singlemodel(test_x)
-        #model_big.load_weights('./cpu_models/fold' + str(foldnum) + '_big_lv1_acc-weights.hdf5')
-        #cross_pred[:, foldnum] = model_big.predict([test_x, test_mask.reshape(-1, 1000, 1)])
-        model_small.load_weights('./MULocDeep/cpu_models/fold' + str(foldnum) + '_big_lv1_acc-weights.hdf5')
+        model_small.load_weights('./cpu_models/fold' + str(foldnum) + '_big_lv1_acc-weights.hdf5')
         cross_pred_small[:, foldnum]= model_small.predict([test_x, test_mask.reshape(-1, 1000, 1)])[0]
         model_att = Model(inputs=model_big.inputs, outputs=model_big.layers[-11].output[1])
         att_pred = model_att.predict([test_x, test_mask.reshape(-1, 1000, 1)])
@@ -152,20 +147,32 @@ def main():
 
     att_N = att_matrix_N.sum(axis=0) / 8
 
-    pred_small = cross_pred_small.sum(axis=1) / 8
+    pred_small = cross_pred_small.sum(axis=1) / 8 #[?,10,8]
     pred_small_c = pred_small.copy()
-    pred_big_c=pred_small_c.max(axis=-1)
+    pred_big_c=pred_small_c.max(axis=-1)   #[?, 10]
 
-    pred_small[pred_small >= 0.5] = 1.0
-    pred_small[pred_small < 0.5] = 0.0
+    cutoff = np.array([[0.5, 0.5, 0.5, 0.3, 0.5, 0.4, 0.3, 0.5],
+                      [0.5, 0.5, 0.5, 0.5, 0.4, 0.4, 0.5, 0.3],
+                      [1, 0.5, 1, 1, 1, 1, 1, 1],
+                      [0.5, 0.5, 0.5, 0.5, 0.5, 1, 1, 1],
+                      [0.5, 0.1, 0.4, 0.4, 0.4, 0.3, 1, 1],
+                      [0.4, 0.5, 0.5, 0.5, 0.4, 1, 1, 1],
+                      [0.5, 0.5, 0.5, 0.1, 0.5, 1, 1, 1],
+                      [0.1, 0.1, 0.5, 0.3, 1, 1, 1, 1],
+                      [0.3, 1, 1, 1, 1, 1, 1, 1],
+                      [0.4, 1, 1, 1, 1, 1, 1, 1]])
+
+    pred_small[pred_small >= cutoff]=1.0
+    pred_small[pred_small < cutoff] =0.0
 
     for i in range(pred_small.shape[0]):
-        index = pred_small_c[i].max(axis=-1).argmax()
-        pred_big[i][index]=1.0
+        index=((pred_small_c[i]>=cutoff).sum(axis=-1))>0
+        pred_big[i][index] =1.0
         if pred_small[i].sum() == 0:
             index = pred_small_c[i].max(axis=-1).argmax()
             index2 = pred_small_c[i][index].argmax()
             pred_small[i][index, index2] = 1.0
+            pred_big[i][index] = 1.0
 
     #sub-cellular results
     f1 = open(outputdir+"sub_cellular_prediction.txt", "w")
