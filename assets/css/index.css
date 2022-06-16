@@ -45,3 +45,10 @@
   font-size: x-small;
 }
 
+
+@media screen and (max-width:1230px){
+  .container{
+    display: flex;
+    flex-direction: column;
+  }
+}
