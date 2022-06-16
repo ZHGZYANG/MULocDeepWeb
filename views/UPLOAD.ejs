@@ -108,135 +108,103 @@
 
                 <!-- left as col -->
                 <div class="container border rounded shadow-lg col-6">
+                    <ul class="nav nav-pills mb-3 pt-3" id="pills-tab" role="tablist">
+                        <li class="nav-item" data-step="8" data-intro="Paste your sequences here to predict.">
+                            <a class="nav-link active" id="pills-Sequence-tab" data-toggle="pill" href="#pills-Sequence"
+                                role="tab" aria-controls="pills-Sequence" aria-selected="true">Sequence</a>
+                        </li>
+                        <li class="nav-item" data-step="9" data-intro="Upload your sequences file to predict">
+                            <a class="nav-link" id="pills-File-tab" data-toggle="pill" href="#pills-File" role="tab"
+                                aria-controls="pills-File" aria-selected="false">File</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content pb-3" id="pills-tabContent">
+                        <div class="tab-pane fade show active" id="pills-Sequence" role="tabpanel"
+                            aria-labelledby="pills-Sequence-tab">
+                            <form class="prediction" action="/upload/sequence" method="POST"
+                                onsubmit="return checkSeqValid()">
+                                <div class="form-row">
+                                    <div class="form-group col-12">
+                                        <label for="sequenceInput">Sequence</label>
+                                        <textarea class="form-control" id="sequenceInput" name="sequenceInput" rows="6"
+                                            aria-describedby="sequenceHelp" required></textarea>
+                                        <small id="sequenceHelp" class="form-text text-muted">The sequence(s) must in
+                                            FASTA format
+                                            (maximum 200 sequences).
+                                        </small>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-12 col-lg-6">
+                                        <label for="nickName1">Job Nickname</label>
+                                        <input class="form-control" id="nickName1" name="nickName1"
+                                            aria-describedby="nickNameHelp1">
+                                        <small id="nickNameHelp1" class="form-text text-muted">Optional</small>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-12 col-lg-6">
+                                        <label for="emailInput1"> Email address</label>
+                                        <input type="email" class="form-control" id="emailInput1" name="emailInput1"
+                                            aria-describedby="emailHelp1" placeholder="Enter email">
+                                        <small id="emailHelp1" class="form-text text-muted">Optional. We will notify you
+                                            through email when the job is done. (We'll never share your email with
+                                            anyone else.)</small>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary submitBtn">Submit</button>
+                                <button type="reset" class="btn btn-secondary">Reset</button>
+                                <input type="button" id="sample" class="btn btn-secondary" value="Sample" />
+                            </form>
+                        </div>
 
-                    <!-- left top as col until enter your email -->
-                    <div class="container">
-                        <ul class="nav nav-pills mb-2 pt-3  d=" pills-tab role="tablist">
-                            <!-- <li class="nav-item" data-step="8" data-intro="Paste your sequences here to predict.">
-                    <a class="nav-link active" id="pills-Sequence-tab" data-toggle="pill" href="#pills-Sequence"
-                        role="tab" aria-controls="pills-Sequence" aria-selected="true">Sequence</a>
-                </li> -->
-                            <li class=" px-0" data-step="9" data-intro="Upload your sequences file to predict">
-                                <a class="nav-link" id="pills-File-tab" data-toggle="pill" href="#pills-File" role="tab"
-                                    aria-controls="pills-File" aria-selected="false">Upload a File</a>
-                            </li>
-                        </ul>
-
-                        <div class="tab-content pb-3" id="pills-tabContent">
-                            <div class="tab-pane fade show active" id="pills-Sequence" role="tabpanel"
-                                aria-labelledby="pills-Sequence-tab">
-                                <form class="prediction" action="/upload/sequence" method="POST"
-                                    onsubmit="return checkSeqValid()">
-                                    <div class="form-row">
-                                        <div class="container form-group col-11">
-                                            <label for="sequenceInput">Job 1</label>
-                                            <textarea class="form-control mt-2" id="sequenceInput" name="sequenceInput"
-                                                rows="6" aria-describedby="sequenceHelp" placeholder="Enter sequences"
-                                                required></textarea>
-                                            <!-- <small id="sequenceHelp" class="form-text text-muted">The sequence(s) must in FASTA
-                                    format
-                                    (maximum 200 sequences).
-                                </small> -->
+                        <div class="tab-pane fade" id="pills-File" role="tabpanel" aria-labelledby="pills-File-tab">
+                            <form class="prediction" action="/upload/file" method="POST" enctype="multipart/form-data">
+                                <div class="form-row">
+                                    <div class="form-group col-12 col-lg-6">
+                                        <p>Upload file</p>
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="fileSelect"
+                                                name="fileSelect" aria-describedby="fileHelp"
+                                                onchange="checkFileValid()" required>
+                                            <label id="fileLabel" class="custom-file-label text-truncate"
+                                                for="fileSelect">Choose
+                                                file</label>
+                                            <small id="fileHelp" class="form-text text-muted">The file uploaded should
+                                                contains only
+                                                protein sequence(s) in FASTA format (maximum 200 sequences).</small>
                                         </div>
                                     </div>
-                                    <!-- <div class="form-row">
-                            <div class="form-group col-12 col-lg-6">
-                                <label for="nickName1">Job Nickname</label>
-                                <input class="form-control" id="nickName1" name="nickName1"
-                                    aria-describedby="nickNameHelp1">
-                                <small id="nickNameHelp1" class="form-text text-muted">Optional</small>
-                            </div>
-                        </div> -->
-                                    <!-- <div class="form-row justify-content-end"> -->
-                                    <div class="form-group col-12 mt-5">
-                                        <div class="form-check row justify-content-end">
-                                            <label for="emailInput1" class="col-8 offset-md-3"> Notify me through
-                                                email
-                                                when
-                                                down</label>
-                                            <input class="form-check-input col-1" type="checkbox" value="notify"
-                                                id="emailInput1">
-                                        </div>
-                                        <input type="email" class="form-control col-8 offset-md-4" id="emailInput1"
-                                            name="emailInput1" aria-describedby="emailHelp1"
-                                            placeholder="Enter your email">
-                                        <!-- <small id="emailHelp1" class="form-text text-muted">Optional. We will notify you
-                                        through
-                                        email when the job is done. (We'll never share your email with anyone
-                                        else.)</small> -->
-                                    </div>
-                                    <!-- </div> -->
-                            </div>
+                                </div>
 
-
-                        </div>
-                        <!-- the end of enter your email -->
-                    </div>
-
-
-                    <!-- <div class="col align-self-end"> -->
-                    <div class="row justify-content-between mt-5">
-                        <div class="col-4 offset-md-1">
-                            <button type="reset" class="btn btn-outline-dark">Reset</button>
-                            <input type="button" id="sample" class="btn btn-outline-dark" value="Sample" />
-                        </div>
-                        <div class="col-4 offset-md-3">
-                            <button type="submit" class="btn btn-primary submitBtn align-self-end">Go
-                                analyze</button>
-                        </div>
-                    </div>
-                    <!-- </div> -->
-
-                    </form>
-
-
-
-                    <!-- <div class="tab-pane fade" id="pills-File" role="tabpanel" aria-labelledby="pills-File-tab">
-                        <form class="prediction" action="/upload/file" method="POST" enctype="multipart/form-data">
-                            <div class="form-row">
-                                <div class="form-group col-12 col-lg-6">
-                                    <p>Upload file</p>
-                                    <div class="custom-file">
-                                        <input type="file" class="custom-file-input" id="fileSelect" name="fileSelect"
-                                            aria-describedby="fileHelp" onchange="checkFileValid()" required>
-                                        <label id="fileLabel" class="custom-file-label text-truncate"
-                                            for="fileSelect">Choose
-                                            file</label>
-                                        <small id="fileHelp" class="form-text text-muted">The file uploaded should
-                                            contains
-                                            only
-                                            protein sequence(s) in FASTA format (maximum 200 sequences).</small>
+                                <div class="form-row">
+                                    <div class="form-group col-12 col-lg-6">
+                                        <label for="nickName2">Job NickName</label>
+                                        <input class="form-control" id="nickName2" name="nickName2"
+                                            aria-describedby="nickNameHelp2">
+                                        <small id="nickNameHelp2" class="form-text text-muted">Optional</small>
                                     </div>
                                 </div>
-                            </div>
+                                <div class="form-row">
+                                    <div class="form-group col-12 col-lg-6">
+                                        <label for="emailInput2">Email address</label>
+                                        <input type="email" class="form-control" id="emailInput2" name="emailInput2"
+                                            aria-describedby="emailHelp2" placeholder="Enter email">
+                                        <small id="emailHelp2" class="form-text text-muted">Optional. We will notify you
+                                            through email when the job is done. (We'll never share your email with
+                                            anyone else.)</small>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary submitBtn">Submit</button>
+                                <button id="reset" type="reset" class="btn btn-secondary">Reset</button>
+                            </form>
+                        </div>
+                    </div>
 
-                            <div class="form-row">
-                                <div class="form-group col-12 col-lg-6">
-                                    <label for="nickName2">Job NickName</label>
-                                    <input class="form-control" id="nickName2" name="nickName2"
-                                        aria-describedby="nickNameHelp2">
-                                    <small id="nickNameHelp2" class="form-text text-muted">Optional</small>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-12 col-lg-6">
-                                    <label for="emailInput2">Email address</label>
-                                    <input type="email" class="form-control" id="emailInput2" name="emailInput2"
-                                        aria-describedby="emailHelp2" placeholder="Enter email">
-                                    <small id="emailHelp2" class="form-text text-muted">Optional. We will notify you
-                                        through
-                                        email when the job is done. (We'll never share your email with anyone
-                                        else.)</small>
-                                </div>
-                            </div>
-                            <button type="submit" class="btn btn-primary submitBtn">Submit</button>
-                            <button id="reset" type="reset" class="btn btn-secondary">Reset</button>
-                        </form>
-                    </div> -->
                 </div>
 
 
-                <div class="col-5 offset-md-1">
+                <div class="container col-5 offset-md-1">
                     <div class="container col  mb-2">
                         <h5 class="mb-0 font-weight-bold bg-light">What's new</h5>
                         <hr class="mt-0">
