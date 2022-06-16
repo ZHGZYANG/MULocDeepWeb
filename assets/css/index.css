@@ -47,8 +47,9 @@
 
 
 @media screen and (max-width:1230px){
-  .container{
+ .jumbotron.jumbotron-fluid.text-center.py-0 .container .row.align-items-center{
     display: flex;
     flex-direction: column;
   }
+  
 }
