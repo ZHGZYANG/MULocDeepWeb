@@ -25,6 +25,12 @@
     height: fit-content;
 }
 
+.whatsnew embed{
+  height:100px;
+  width:410px;
+  overflow:auto;
+}
+
 #map-cont{
   height: 245px;
   margin: 120px 30px 30px 30px;
@@ -60,6 +66,16 @@
     margin-left: auto;
     margin-right: auto;
     margin-top: 25px;
+    max-width: 75%;
+  }
+  .container.my-0 .row.justify-content-center .container.border.rounded.shadow-lg.col-6{
+    max-width: 75%;
+  }
+  .whatsnew embed{
+    height:100px;
+    width:410px;
+    overflow:auto;
+    width: -webkit-fill-available;
   }
   #map-cont{
     height: 50px;
