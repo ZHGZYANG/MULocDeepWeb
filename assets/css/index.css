@@ -82,4 +82,7 @@
     margin: 120px 30px 30px 30px;
     width: max-content;
   }
+  #map-cont #map{
+    width:max-content;
+  }
 }
