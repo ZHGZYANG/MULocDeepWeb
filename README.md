@@ -217,3 +217,10 @@ Visit http://localhost:8082/ to check
 1. Updated schedule cleaning time to UTC 6:00:00
 ### Version 1.6
 1. The current version of MULocDeep webserver. Added citation. 
+
+## Updates History
+Our webserver/stand-alone package are free of charge for academic users; other users are requested to contact the corresponding author of this work at
+  - Email: xudong@missouri.edu
+
+If you ever have any question or problem using our tool, please contact us.
+  - Email: yjm85@mail.missouri.edu
