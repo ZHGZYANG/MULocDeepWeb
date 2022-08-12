@@ -4,3 +4,7 @@ pre {
     margin:0px;
     /* font-weight:inherit; */
 }
+
+pre::first-line{
+    color: red;
+}

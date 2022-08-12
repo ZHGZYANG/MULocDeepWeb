@@ -25,8 +25,16 @@
     height: fit-content;
 }
 
+.container.col.mb-2{
+  height:45%;
+}
+
+.whatsnew{
+  height:80%;
+}
 .whatsnew embed{
-  height:100px;
+  /* height:100px; */  /* whatsnew size increase */
+  height:100%;
   width:410px;
   overflow:auto;
 }
@@ -85,4 +93,8 @@
   #map-cont #map{
     width:max-content;
   }
+  /* .map-welcome{
+    font-size: 6px;
+    max-width: max-content!important;
+  } */
 }
