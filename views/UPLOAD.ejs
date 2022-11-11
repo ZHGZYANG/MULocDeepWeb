@@ -11,7 +11,13 @@
         <nav class="navbar navbar-expand-md navbar-dark bg-primary">
             <div class="container col-12 col-lg-8">
 
-                <a class="navbar-brand" href="/" data-step="1" data-intro="Uploading page">MULocDeep</a>
+                <a class="navbar-brand" href="/" data-step="1" data-intro="Uploading page" style="margin-right: 0px;">MUL</a>
+                <a><img src="/images/Picture23.png" style="height: 30px;" /></a>
+                <a class="navbar-brand" href="/" data-step="1" data-intro="Uploading page">cDeep</a>
+                <!-- <a class="navbar-brand" href="/" data-step="1" data-intro="Uploading page">
+                <img src="/images/ProLoc (3).png" style="width: 50px; height: 40px;" />
+                <img src="/images/ProLoc32.png" style="width: 50px; height: 40px;" />
+                </a> -->
                 <button class="navbar-toggler ml-3" type="button" data-toggle="collapse"
                     data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                     aria-label="Toggle navigation">
@@ -69,10 +75,14 @@
                                             alt="a map" style="width:80%;height:80%;"> -->
                         <!-- Inserting Map page into home page as a Div -->
                         <div id="map-cont">
-                            <div id="map" data-step="1" data-intro="Our users around the world!"
-                                style="background-color: white !important;"></div>
+                            <div id="map0">
+                                <!-- <script type="text/javascript" id="clustrmaps" src="//clustrmaps.com/map_v2.js?d=4F_B7ZQQv_QhwrIZMRG9R59R8JummliEmeOE3oU2Ito"></script> -->
+                                <script type="text/javascript" id="clustrmaps" src="//clustrmaps.com/map_v2.js?cl=ffffff&w=300&t=n&d=4F_B7ZQQv_QhwrIZMRG9R59R8JummliEmeOE3oU2Ito"></script>
+                            </div>
+                            <!-- <div id="map" data-step="1" data-intro="Our users around the world!"
+                                style="background-color: white !important;"></div> -->
                 
-                            <div class="container border shadow-lg col-0 col-lg-4 map-welcome" id="welcomeCard" data-step="2"
+                            <!-- <div class="container border shadow-lg col-0 col-lg-4 map-welcome" id="welcomeCard" data-step="2"
                                 data-intro="The statistic data of our website.">
                                 <div class="row">
                                     <div class="col-lg-12">
@@ -94,7 +104,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
@@ -132,6 +142,30 @@
                                             FASTA format
                                             (maximum 200 sequences).
                                         </small>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-12 col-lg-6">
+                                        <label for="mode">Mode</label><br>
+                                        <div id="mode_div">
+                                            <input type="radio" id="high_throughput" name="mode_type" value="high_throughput">
+                                              <label for="high_throughput">High-throughput(Fast)</label><br>
+                                            <input type="radio" id="high_quality" name="mode_type" value="high_quality">
+                                              <label for="high_quality">High-quality(Slow)</label><br>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-12 col-lg-6">
+                                        <label for="species">Species</label><br>
+                                        <div id="mode_div">
+                                            <input type="radio" id="plant" name="species_type" value="plant">
+                                              <label for="plant">Plant</label><br>
+                                            <input type="radio" id="animal" name="species_type" value="animal">
+                                              <label for="plant">Animal</label><br>
+                                            <input type="radio" id="fungi" name="species_type" value="fungi">
+                                              <label for="plant">Fungi</label><br>
+                                            <input type="radio" id="unknown" name="species_type" value="unknown">
+                                              <label for="plant">Unknown</label><br>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="form-row">
@@ -289,7 +323,7 @@
         
         <script type="text/javascript" src="/js/index.js"></script>
 
-     <script type="text/javascript" src="/js/upload.js"></script>
+     <script type="text/javascript" src="/js/upload.js"></script>    
     
 
     <% include partials/footer %>
