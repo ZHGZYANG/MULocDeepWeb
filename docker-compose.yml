@@ -100,14 +100,70 @@ services:
       - redis
       - rabbitmq
 
-  worker:
+  worker1:
     build:
       context: ./flask_api/
       dockerfile: Dockerfile
-    container_name: mulocdeep_worker
+    container_name: mulocdeep_worker1
     command: celery --app project.server.tasks.celery worker --loglevel=info --logfile=project/logs/celery.log -P gevent
+    # command: celery --app project.server.tasks.celery worker --loglevel=info --logfile=project/logs/celery.log -P gevent
+    # command: celery multi start 3 -A project.server.tasks.celery worker -l info
     env_file:
       - .env
+    deploy:
+      resources:
+         limits:
+            cpus: "16"
+    volumes:
+      - Predictions:/data/results
+      - Uploads:/data/upload
+    networks:
+      - muloc-network
+    depends_on:
+      - mongodb
+      - redis
+      - rabbitmq
+      - celery-api
+
+  worker2:
+    build:
+      context: ./flask_api/
+      dockerfile: Dockerfile
+    container_name: mulocdeep_worker2
+    command: celery --app project.server.tasks.celery worker --loglevel=info --logfile=project/logs/celery.log -P gevent
+    # command: celery --app project.server.tasks.celery worker --loglevel=info --logfile=project/logs/celery.log -P gevent
+    # command: celery multi start 3 -A project.server.tasks.celery worker -l info
+    env_file:
+      - .env
+    deploy:
+      resources:
+         limits:
+            cpus: "16"
+    volumes:
+      - Predictions:/data/results
+      - Uploads:/data/upload
+    networks:
+      - muloc-network
+    depends_on:
+      - mongodb
+      - redis
+      - rabbitmq
+      - celery-api
+
+  worker3:
+    build:
+      context: ./flask_api/
+      dockerfile: Dockerfile
+    container_name: mulocdeep_worker3
+    command: celery --app project.server.tasks.celery worker --loglevel=info --logfile=project/logs/celery.log -P gevent
+    # command: celery --app project.server.tasks.celery worker --loglevel=info --logfile=project/logs/celery.log -P gevent
+    # command: celery multi start 3 -A project.server.tasks.celery worker -l info
+    env_file:
+      - .env
+    deploy:
+      resources:
+         limits:
+            cpus: "16"
     volumes:
       - Predictions:/data/results
       - Uploads:/data/upload
@@ -133,7 +189,6 @@ services:
       - celery-api
       - rabbitmq
       - redis
-      - worker
     networks:
       - muloc-network
 
