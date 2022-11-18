@@ -1,0 +1,161 @@
+<!-- ----------------------------------------------------------------------- -->
+<!--                         JOBSLIST Page Template                          -->
+<!--                            Author: Yifu Yao                             -->
+<!--                        Last Updated date: 6/14/2020                     -->
+<!-- ----------------------------------------------------------------------- -->
+
+<% include partials/header %>
+
+<div class="wrapper">
+
+  <nav class="navbar navbar-expand-md navbar-dark bg-primary">
+    <div class="container col-12 col-lg-8">
+
+      <a class="navbar-brand" href="/">MULocDeep</a>
+      <button class="navbar-toggler ml-3" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/jobs"><i class="fas fa-search"></i> Search </a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="/jobs/all"><i class="fas fa-list"></i> Status <span
+                class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/jobs/example"><i class="fas fa-envelope-open-text"></i> Example </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/contact"><i class="fas fa-phone-square-alt"></i> Contact </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/map"><i class="fas fa-globe-americas"></i> Map </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/tools"><i class="fas fa-toolbox"></i> Other Tools </a>
+        </li>
+        </ul>
+      </div>
+      <button class="btn btn-sm btn-outline-light my-2 my-sm-0" href="javascript:void(0);"
+        onclick="javascript:introJs().start();">HELP</button>
+    </div>
+  </nav>
+
+  <!-- <div class="container"> -->
+  <div class="jumbotron jumbotron-fluid text-center">
+    <div class="container">
+      <h1 class="display-4"><span class="border-bottom border-dark p-1">MULocDeep</span></h1>
+      <p class="lead d-none d-sm-block">A protein localization prediction tool at sub-cellular and sub-organellar levels</p>
+      <p class="d-none d-lg-block"></p>
+    </div>
+  </div>
+  <!-- </div> -->
+
+  <div class="container" data-step="1" data-intro="You can check your capacity here.">
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      Hello user <strong><%= ip%></strong>. Your current capacity is
+      <strong><%= (capacity/1024/1024).toFixed(2)%>MB/<%= 100%> MB</strong>. 
+      Your tasks will be kept for <strong>72</strong> hours.
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="container border rounded shadow-lg" data-step="2"
+    data-intro="This table only shows your own jobs. Click specific job ID to see results, or click specific glasses button to check. You can delete jobs by click delete button.">
+    <div class="table-responsive-md">
+      <table class="table table-striped table-hover text-center" id="table">
+        <thead class="thead-black thead-dark">
+          <tr data-step="3" data-intro="Click different theads to sort your jobs by different types.">
+            <th class="th-sm" scope="col">Job ID</th>
+            <th class="th-sm" scope="col">Job Nickname</th>
+            <th class="th-sm" scope="col">Submitted Time(CST)</th>
+            <th class="th-sm" scope="col">Status</th>
+            <th class="th-sm" scope="col">Operation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- <tr class="table-active">
+          <th scope="row">123456789ABCDEFG</th>
+          <td>Mark</td>
+          <td>2019-09-16 21:36:12</td>
+          <td>
+            Processing
+            <div class="spinner-border spinner-border-sm" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </td>
+          <td>
+            <a class="btn btn-primary disabled" style="color:white;text-decoration:none;"><i
+                class="fas fa-glasses"></i></a>
+            <button class="btn btn-danger" disabled><i class="far fa-trash-alt"></i></button>
+          </td>
+        </tr>
+        <tr class="table-success">
+          <th scope="row">123456789ABCDEFG</th>
+          <td>Jacob</td>
+          <td>2019-09-16 21:36:12</td>
+          <td>Done <i class="fas fa-check"></i></td>
+          <td>
+            <a class="btn btn-primary disabled" style="color:white;text-decoration:none;"><i
+                class="fas fa-glasses"></i></a>
+            <button class="btn btn-danger" disabled><i class="far fa-trash-alt"></i></button>
+          </td>
+        </tr>
+        <tr class="table-danger">
+          <th scope="row">123456789ABCDEFG</th>
+          <td>Larry</td>
+          <td>2019-09-16 21:36:12</td>
+          <td>Error <i class="fas fa-times"></i></td>
+          <td>
+            <a class="btn btn-primary disabled" style="color:white;text-decoration:none;"><i
+                class="fas fa-glasses"></i></a>
+            <button class="btn btn-danger" disabled><i class="far fa-trash-alt"></i></button>
+          </td>
+        </tr> -->
+          <% docs.forEach(function(element){ %>
+          <tr class="table-primary">
+            <th scope="row"><a href="/jobs/:<%= element.job_id %>" style="color:black;text-decoration:none;">
+                <%= element.job_id %></a></th>
+            <td><%= element.nickName%></td>
+            <td><%= element.submittedTime%></td>
+            <td><%= element.status%>
+              <% if (element.status === 'Done'){%>
+              <i class="fas fa-check"></i></td>
+            <% } else if (element.status === 'Processing' || element.status === 'queued') {%>
+            <div class="spinner-border spinner-border-sm" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+            <%} else if (element.status === 'error'){%>
+            <i class="fas fa-times"></i>
+            <%}%>
+          <td>
+            <% if (element.status === 'Done'){%>
+              <a class="btn btn-primary" href="/jobs/:<%= element.job_id %>" style="color:white;text-decoration:none;"><i class="far fa-hand-point-up"></i></a>
+              <button class="btn btn-danger" onclick="deleteTr(this)"><i class="far fa-trash-alt"></i></button>
+            <% } else if (element.status === 'Processing' || element.status === 'queued') { %>
+              <!-- <a class="btn btn-primary" href="/jobs/:<%= element.job_id %>" style="color:white;text-decoration:none;" ><i class="far fa-hand-point-up"></i></a> -->
+              <button class="btn btn-danger" onclick="deleteTr(this)" disabled><i class="far fa-hand-point-up"></i></button>
+              <button class="btn btn-danger" onclick="deleteTr(this)" disabled><i class="far fa-trash-alt"></i></button>
+            <%} else if (element.status === 'error'){%>
+              <!-- <a class="btn btn-primary" href="/jobs/:<%= element.job_id %>" style="color:white;text-decoration:none;"><i class="far fa-hand-point-up"></i></a> -->
+              <button class="btn btn-danger" onclick="deleteTr(this)" disabled><i class="far fa-hand-point-up"></i></button>              
+              <button class="btn btn-danger" onclick="deleteTr(this)"><i class="far fa-trash-alt"></i></button>
+            <%}%>
+          </td>
+          </tr>
+          <% })%>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script type="text/javascript" src="/js/joblist.js"></script>
+
+
+  <% include partials/footer %>

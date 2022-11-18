@@ -1,0 +1,128 @@
+<!-- ----------------------------------------------------------------------- -->
+<!--                          SEARCH Page Template                           -->
+<!--                            Author: Yifu Yao                             -->
+<!--                        Last Updated date: 6/14/2020                     -->
+<!-- ----------------------------------------------------------------------- -->
+
+<% include partials/header %>
+
+<div class="wrapper">
+
+    <nav class="navbar navbar-expand-md navbar-dark bg-primary">
+        <div class="container col-12 col-lg-8">
+
+            <a class="navbar-brand" href="/">MULocDeep</a>
+            <button class="navbar-toggler ml-3" type="button" data-toggle="collapse"
+                data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/jobs"><i class="fas fa-search"></i> Search <span
+                                class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/jobs/all"><i class="fas fa-list"></i> Status </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/jobs/example"><i class="fas fa-envelope-open-text"></i> Example </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/contact"><i class="fas fa-phone-square-alt"></i> Contact </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/map"><i class="fas fa-globe-americas"></i> Map </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/tools"><i class="fas fa-toolbox"></i> Other Tools </a>
+                    </li>
+                </ul>
+            </div>
+            <button class="btn btn-sm btn-outline-light my-2 my-sm-0" href="javascript:void(0);"
+                onclick="javascript:introJs().start();">HELP</button>
+        </div>
+    </nav>
+
+    <!-- <div class="container"> -->
+    <div class="jumbotron jumbotron-fluid text-center">
+        <div class="container">
+            <h1 class="display-4"><span class="border-bottom border-dark p-1">MULocDeep</span></h1>
+            <p class="lead d-none d-sm-block">A protein localization prediction tool at sub-cellular and sub-organellar levels</p>
+        </div>
+    </div>
+    <!-- </div> -->
+
+    <div class="container border rounded shadow-lg">
+        <ul class="nav nav-pills mb-3 pt-3" id="pills-tab" role="tablist">
+            <li class="nav-item" data-step="1" data-intro="Search your job by job ID.">
+                <a class="nav-link active" id="pills-SearchID-tab" data-toggle="pill" href="#pills-SearchID" role="tab"
+                    aria-controls="pills-SearchID" aria-selected="true">Search by JobID</a>
+            </li>
+            <li class="nav-item" data-step="2" data-intro="Search your job by job's nikcname.">
+                <a class="nav-link" id="pills-Nickname-tab" data-toggle="pill" href="#pills-Nickname" role="tab"
+                    aria-controls="pills-Nickname" aria-selected="false">Search by Job Nickname</a>
+            </li>
+            <li class="nav-item" data-step="3" data-intro="Search your job(only includes one sequence) by sequence">
+                <a class="nav-link" id="pills-Seq-tab" data-toggle="pill" href="#pills-Seq" role="tab"
+                    aria-controls="pills-Seq" aria-selected="false">Search by Sequence</a>
+            </li>
+        </ul>
+        <div class="tab-content pb-3" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="pills-SearchID" role="tabpanel"
+                aria-labelledby="pills-SearchID-tab">
+                <form action="/result/id" method="POST">
+                    <div class="form-row">
+                        <div class="form-group col-12 col-lg-6">
+                            <label for="JobIDInput">Input JobID</label>
+                            <input class="form-control" type="text" id="JobIDInput" name="JobIDInput"
+                                placeholder="JobID" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Search</button>
+                    <button type="reset" class="btn btn-secondary">Reset</button>
+                </form>
+            </div>
+
+            <div class="tab-pane fade" id="pills-Nickname" role="tabpanel" aria-labelledby="pills-Nickname-tab">
+                <form action="/result/name" method="POST">
+                    <div class="form-row">
+                        <div class="form-group col-12 col-lg-6">
+                            <label for="NicknameInput">Input Nickname</label>
+                            <input class="form-control" type="text" id="NicknameInput" name="NicknameInput"
+                                placeholder="Nickname" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Search</button>
+                    <button type="reset" class="btn btn-secondary">Reset</button>
+                </form>
+            </div>
+
+            <div class="tab-pane fade" id="pills-Seq" role="tabpanel" aria-labelledby="pills-Seq-tab">
+                <form action="/result/seq" method="POST">
+                    <div class="form-row">
+                        <div class="form-group col-12 col-lg-6">
+                            <label for="sequenceInput">Input your exact sequence</label>
+                            <textarea class="form-control" id="sequenceInput" name="sequenceInput" rows="6"
+                                aria-describedby="sequenceHelp" required></textarea>
+                            <small id="sequenceHelp" class="form-text text-muted">The sequence must in FASTA format.
+                            </small>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Search</button>
+                    <button type="reset" class="btn btn-secondary">Reset</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="container pt-3">
+        <h6 class=""> Citation:</h6>
+        <p>
+            MULocDeep: An Interpretable Deep Learning Model for Protein Localization Prediction at the Sub-organelle Resolution (in submission)
+        </p>
+    </div>
+
+<% include partials/footer %>

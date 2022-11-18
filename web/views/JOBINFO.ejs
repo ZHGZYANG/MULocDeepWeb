@@ -1,0 +1,157 @@
+<!-- ----------------------------------------------------------------------- -->
+<!--                          JOBINFO Page Template                          -->
+<!--                            Author: Yifu Yao                             -->
+<!--                        Last Updated date: 6/14/2020                     -->
+<!-- ----------------------------------------------------------------------- -->
+
+<% include partials/header %>
+
+<link rel="stylesheet" type="text/css" href="/css/jobinfo.css">
+
+<div class="wrapper">
+
+    <nav class="navbar navbar-expand-md navbar-dark bg-primary">
+        <div class="container col-12 col-lg-8">
+
+            <a class="navbar-brand" href="/">MULocDeep</a>
+            <button class="navbar-toggler ml-3" type="button" data-toggle="collapse"
+                data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/jobs"><i class="fas fa-search"></i> Search</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/jobs/all"><i class="fas fa-list"></i> Status </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/jobs/example"><i class="fas fa-envelope-open-text"></i> Example </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/contact"><i class="fas fa-phone-square-alt"></i> Contact </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/map"><i class="fas fa-globe-americas"></i> Map </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/tools"><i class="fas fa-toolbox"></i> Other Tools </a>
+                    </li>
+                </ul>
+            </div>
+            <button class="btn btn-sm btn-outline-light my-2 my-sm-0" href="javascript:void(0);"
+                onclick="javascript:introJs().start();">HELP</button>
+        </div>
+    </nav>
+
+    <!-- <div class="container"> -->
+    <div class="jumbotron jumbotron-fluid text-center">
+        <div class="container">
+            <h1 class="display-4"><span class="border-bottom border-dark p-1">MULocDeep</span></h1>
+            <p class="lead d-none d-sm-block">A protein localization prediction tool at sub-cellular and sub-organellar levels</p>
+        </div>
+    </div>
+    <!-- </div> -->
+
+    <div class="container" data-step="1" data-intro="Show your current job's status.">
+
+        <div class="progress mb-1">
+            <div class="progress-bar bg-light seperate-bar" role="progressbar" style="width: 25%" aria-valuenow="25"
+                aria-valuemin="0" aria-valuemax="100"> Uploading </div>
+            <div class="progress-bar bg-light seperate-bar" role="progressbar" style="width: 25%" aria-valuenow="25"
+                aria-valuemin="0" aria-valuemax="100"> Queued </div>
+            <div class="progress-bar bg-light seperate-bar" role="progressbar" style="width: 25%" aria-valuenow="25"
+                aria-valuemin="0" aria-valuemax="100"> Predicting </div>
+            <div class="progress-bar bg-light seperate-bar" role="progressbar" style="width: 25%" aria-valuenow="25"
+                aria-valuemin="0" aria-valuemax="100"> Done </div>
+        </div>
+        <% if (flag == 0){%>
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 50%;"
+                aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <h1 class="display-4 text-center mt-3"> Queued... </h1>
+        <h5 class="text-center mt-3"> You are the No.<%= number %> in the waiting queue.</h5>
+        <%} else if (flag == 1){%>
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%;"
+                aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <h1 class="display-4 text-center mt-3"> Completed! </h1>
+        <%} else if (flag == 2){%>
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%;"
+                    aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <h1 class="display-4 text-center mt-3"> Failed! </h1>
+        <%} else if (flag == -1){%>
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 75%;"
+                aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <h1 class="display-4 text-center mt-3"> Predicting... </h1>
+        <%}%>
+
+</div>
+
+<div class="container border rounded shadow-lg mt-5 d-flex flex-column" style="width: 20%;">
+        <h5 class="text-center mt-3">
+            The job ID is:  
+        </h5>
+
+        <input type="text" readonly class="btn" name="jobIDStatic" id="jobIDOutput" value="<%= jobId %>">
+
+        <div class="btn-group mb-3" role="group">
+            <% if (flag == 0 || flag == -1 || flag == 2){%>
+            <button class="btn btn-outline-primary mt-2" disabled data-step="2"
+                data-intro="If your job has completed, you can click the ID button to jump to result page.">View
+                Result</button>
+            <%} else if (flag == 1){%>
+            <a class="btn btn-primary mt-2" href="/jobs/:<%= jobId %>" data-step="2"
+                data-intro="Click the ID button to jump to result page."> View Result</a>
+            <%}%>
+            <button class="btn btn-outline-secondary mt-2" id="copyBtn" data-step="3" data-intro="Copy the job ID."> Copy </button>    
+        </div>
+
+        <% if (flag == 0){%>
+            <h5 class="text-center">
+                Email address:
+            </h5>
+            <div class="input-group mb-3" data-step="3"
+            data-intro="You can still update your email address here.">
+                <input type="email" class="form-control" placeholder="Enter email" name="emailInput" id='emailInput'
+                    aria-label="Enter email" aria-describedby="emailBtn" required>
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" id="emailBtn">Submit</button>
+                </div>
+                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
+                    else.</small>
+            </div>
+        <%}%>
+</div>
+
+<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="infoModalLabel"
+aria-hidden="true">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="infoModalLabel">MUDeepLoc</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body" id="infoModalBody">
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+        </div>
+    </div>
+</div>
+</div>
+
+<script type="text/javascript" src="/js/jobinfo.js"></script>
+
+
+<% include partials/footer %>
