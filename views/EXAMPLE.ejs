@@ -54,6 +54,23 @@
     </div>
 
     <div class="container col-12 col-lg-8 ">
+        <table class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th scope="col">Prediction</th>
+                <th scope="col">No. of Proteins</th>
+              </tr>
+            </thead>
+            <tbody>
+                <% for (const [key, value] of Object.entries(predictions)) {%>
+                    <tr>
+                        <td><%= key %></td>
+                        <td><% if(value > 10) {%> <a href="https://www.google.com" target="_blank"><%= value %></a><% }else{ %><%= value %><% } %></td>
+                    </tr>
+                <% } %>              
+            </tbody>
+          </table>
+          <br>
         <div class="btn-toolbar d-flex justify-content-start" role="toolbar" aria-label="Toolbar with button group">
             <div class="btn-group mr-2" role="group" aria-label="First group">
                 <% var address = "/jobs/download/:" + jobId%>
