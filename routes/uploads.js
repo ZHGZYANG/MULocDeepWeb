@@ -8,6 +8,10 @@
 var request = require('request');
 var express = require("express");
 var router = express.Router({ mergeParams: true });
+var FormData = require('form-data');
+var axios = require('axios').default;
+var path = require('path');
+// const fetch = require('node-fetch');
 var sd = require("silly-datetime"),
 	fs = require("fs"),
 	moment = require("moment"),
@@ -33,7 +37,9 @@ router.get("/upload/:id", function (req, res) {
 	jobId = jobId.substr(1); // delete the ':'
 
 	var flag = 0;
-	var number = taskList.length;
+	// var number = taskList.length;
+	var number=jobInfo.countDocuments({ status: "Queued" });
+	// var num_procs=jobInfo.countDocuments({ status: "Processing" });
 	setTimeout( function(){jobInfo.findOne({ _id: jobId }, function (err, doc) {
 		if (err) {
 			console.error(err);
@@ -47,6 +53,9 @@ router.get("/upload/:id", function (req, res) {
 			else if (doc.status === 'Processing') {
 				flag = -1;
 			}
+			else if (doc.status === 'Failed') {
+				flag = 2;
+			} 
 	
 			// =================================
 			// Calculating estimated waiting time 
@@ -57,50 +66,173 @@ router.get("/upload/:id", function (req, res) {
 	
 			// When the task is in the waiting queue
 			if (flag == 0) {
+				res.render("JOBINFO", { jobId: jobId, flag: flag, number: number});
+
 				// only one task in the queue and no job is processing.
-				if (taskList.length == 1 && curJobID == null) {
-					jobInfo.findOne({ _id: taskList[0] }, function (err, doc) {
-						numberOfSeq = doc.proteins;
-						totalSec = numberOfSeq * 4 + 40;
-						timecal = Math.floor(totalSec / 60) + 'mins ' + Math.floor(totalSec % 60) + 's';
-						res.render("JOBINFO", { jobId: jobId, flag: flag, number: number, time: timecal });
+				// if (taskList.length == 1 && curJobID == null) {
+				// 	jobInfo.findOne({ _id: taskList[0] }, function (err, doc) {
+				// 		numberOfSeq = doc.proteins;
+				// 		totalSec = numberOfSeq * 4 + 40;
+				// 		timecal = Math.floor(totalSec / 60) + 'mins ' + Math.floor(totalSec % 60) + 's';
+				// 		res.render("JOBINFO", { jobId: jobId, flag: flag, number: number, time: timecal });
 	
-					})
-				}
-				// only one task in the queue and a job is processing.
-				else if (taskList.length == 1 && curJobID != null) {
-					jobInfo.findOne({ _id: curJobID }, function (err, doc0) {
-						numberOfSeq = doc0.proteins;
-						jobInfo.findOne({ _id: taskList[0] }, function (err, doc1) {
-							numberOfSeq = numberOfSeq + doc1.proteins;
-							totalSec = numberOfSeq * 4 + 40;
-							timecal = Math.floor(totalSec / 60) + 'mins ' + Math.floor(totalSec % 60) + 's';
-							res.render("JOBINFO", { jobId: jobId, flag: flag, number: number, time: timecal });
-						});
-					})
-				}
-				// More than one tasks in the queue
-				else if (taskList.length > 1 && curJobID != null) {
-					jobInfo.findOne({ _id: curJobID }, function (err, doc) {
-						numberOfSeq = doc.proteins;
-						asyncloopCalculateTime(0, 0, function (temp) {
-							numberOfSeq = numberOfSeq + temp;
-							totalSec = numberOfSeq * 4 + 40
-							timecal = Math.floor(totalSec / 60) + 'mins ' + Math.floor(totalSec % 60) + 's';
-							res.render("JOBINFO", { jobId: jobId, flag: flag, number: number, time: timecal });
-						});
-					})
-				}
-				else res.render("JOBINFO", { jobId: jobId, flag: flag, number: number, time: "...loading..." });// in case 
+				// 	})
+				// }
+				// // only one task in the queue and a job is processing.
+				// else if (taskList.length == 1 && curJobID != null) {
+				// 	jobInfo.findOne({ _id: curJobID }, function (err, doc0) {
+				// 		numberOfSeq = doc0.proteins;
+				// 		jobInfo.findOne({ _id: taskList[0] }, function (err, doc1) {
+				// 			numberOfSeq = numberOfSeq + doc1.proteins;
+				// 			totalSec = numberOfSeq * 4 + 40;
+				// 			timecal = Math.floor(totalSec / 60) + 'mins ' + Math.floor(totalSec % 60) + 's';
+				// 			res.render("JOBINFO", { jobId: jobId, flag: flag, number: number, time: timecal });
+				// 		});
+				// 	})
+				// }
+				// // More than one tasks in the queue
+				// else if (taskList.length > 1 && curJobID != null) {
+				// 	jobInfo.findOne({ _id: curJobID }, function (err, doc) {
+				// 		numberOfSeq = doc.proteins;
+				// 		asyncloopCalculateTime(0, 0, function (temp) {
+				// 			numberOfSeq = numberOfSeq + temp;
+				// 			totalSec = numberOfSeq * 4 + 40
+				// 			timecal = Math.floor(totalSec / 60) + 'mins ' + Math.floor(totalSec % 60) + 's';
+				// 			res.render("JOBINFO", { jobId: jobId, flag: flag, number: number, time: timecal });
+				// 		});
+				// 	})
+				// }
+				// else res.render("JOBINFO", { jobId: jobId, flag: flag, number: number, time: "...loading..." });// in case 
 			}
 			// When is task is processing
-			else if (flag == -1 && curJobID != null) {
-				jobInfo.findOne({ _id: curJobID }, function (err, doc) {
-					numberOfSeq = doc.proteins;
-					totalSec = numberOfSeq * 4 + 40;
-					timecal = Math.floor(totalSec / 60) + 'mins ' + Math.floor(totalSec % 60) + 's';
-					res.render("JOBINFO", { jobId: jobId, flag: flag, number: number, time: timecal });
-				})
+			else if (flag == -1 ) {
+				res.render("JOBINFO", { jobId: jobId, flag: flag, number: number});
+				// jobInfo.findOne({ _id: curJobID }, function (err, doc) {
+				// 	numberOfSeq = doc.proteins;
+				// 	totalSec = numberOfSeq * 4 + 40;
+				// 	timecal = Math.floor(totalSec / 60) + 'mins ' + Math.floor(totalSec % 60) + 's';
+				// 	res.render("JOBINFO", { jobId: jobId, flag: flag, number: number, time: timecal });
+				// })
+			}
+			else if (flag == 2 ) {
+				res.render("JOBINFO", { jobId: jobId, flag: flag, number: number});
+			}
+			else if (flag == 1) {
+				jobInfo.findById(jobId, function (err, job) {
+				  if (err)
+					console.error(err);
+				  else if (job.compress == "No") {
+				//   else {
+					//  send success email 
+					let link = "<center><a href = \"http://mu-loc.org/jobs/:" + job.id + "\">";
+					if (job.email !== "") {
+						var mail = {
+							from: 'MULocDeep<mulocdeep@gmail.com>',
+							subject: 'MULocDeep: Job Infomation',
+							to: job.email,
+							text: 'Your job: ' + job.id + ' has completed!',
+							html: '<center><h2>MULocDeep</h2></center><br><center><p> Your job :</p></center><br>' +
+								link +
+								job.id + '</a></center><br>' +
+								"<center><p>has completed!</p></center>"
+						};
+						transporter.sendMail(mail, function (error, info) {
+							if (error) return console.log(error);
+							console.log('mail sent:', info.response);
+						});
+					}
+
+					// -----------------------
+					// Compress results data
+					// -----------------------
+					// create a file to stream archive data to.
+					var output = fs.createWriteStream('data/results/' + job.id + '/' + job.id + '.zip');
+					var archive = archiver('zip', {
+						zlib: { level: 9 } // Sets the compression level.
+					});
+
+					// listen for all archive data to be written
+					// 'close' event is fired only when a file descriptor is involved
+					output.on('close', function () {
+						console.log(archive.pointer() + ' total bytes');
+						console.log('archiver has been finalized and the output file descriptor has closed.');
+						console.log('=======================================================================');
+					});
+
+					// This event is fired when the data source is drained no matter what was the data source.
+					// It is not part of this library but rather from the NodeJS Stream API.
+					output.on('end', function () {
+						console.log('Data has been drained');
+					});
+
+					// good practice to catch warnings (ie stat failures and other non-blocking errors)
+					archive.on('warning', function (err) {
+						if (err.code === 'ENOENT') {
+							// log warning
+						} else {
+							// throw error
+							throw err;
+						}
+					});
+
+					// good practice to catch this error explicitly
+					archive.on('error', function (err) {
+						var update = { $set: { status: 'error' } };
+						jobInfo.updateOne({ _id: job.id }, update, function (err, job) {
+							if (err) {
+								console.log(err);
+							}
+							else {
+								console.log("SOMETHING WENT WRONG WHEN PREDICTING!");
+								// console.log(job);
+							}
+						});
+						throw err;
+					});
+
+					// pipe archive data to the file
+					archive.pipe(output);
+
+					// append a file from stream
+					var file1 = 'data/results/' + job.id + '/attention_weights.txt';
+					archive.append(fs.createReadStream(file1), { name: 'attention_weights.txt' });
+					var file2 = 'data/results/' + job.id + '/sub_cellular_prediction.txt';
+					archive.append(fs.createReadStream(file2), { name: 'sub_cellular_prediction.txt' });
+					var file3 = 'data/results/' + job.id + '/sub_organellar_prediction.txt';
+					archive.append(fs.createReadStream(file3), { name: 'sub_organellar_prediction.txt' });
+
+					// finalize the archive (ie we are done appending files but streams have to finish yet)
+					// 'close', 'end' or 'finish' may be fired right after calling this method so register to them beforehand
+					archive.finalize();
+
+					// delete pssm folder
+					// let readDir = fs.readdirSync('data/results/' + job.id);
+					// readDir.forEach(function (item, index) {
+					// 	let stat = fs.statSync('data/results/' + job.id + '/' + item)
+					// 	if (stat.isDirectory() === true) { 
+					// 	  deleteFolder('data/results/' + job.id + '/' + item)
+					// 	  console.log('pssm folder delete...');
+					// 	}
+					// })
+
+					var update = { $set: { compress: "Yes"} };
+					jobInfo.updateOne({ _id: job.id }, update, function (err, u) {
+						if (err)
+							console.log(err);
+						else {
+							console.log("Job info (compress) was updated!");
+							console.log("======================================");
+						}
+					});
+
+
+
+				  }
+				});
+
+                    
+
+				res.render("JOBINFO", { jobId: jobId, flag: flag, number: number});
 			}
 			else res.render("JOBINFO", { jobId: jobId, flag: flag, number: number, time: "...loading..." }); // in case
 		}
@@ -138,12 +270,13 @@ router.post("/upload/sequence", function (req, res) {
 		nickName: nickName,
 		sequence: sequence,
 		email: email,
-		status: "queued",
+		status: "Queued",
 		// submittedTime: sd.format(new Date(), 'YYYY-MM-DD HH:mm:ss'),
-		submittedTime: moment().utcOffset("-06:00").format('YYYY-MM-DD HH:mm:ss'),
+		submittedTime: "",
 		ipAddress: get_client_ip(req),
 		size: 0,
-		proteins: 0
+		proteins: 0,
+		compress: "No"
 	});
 	job.file = job.id + '.fa';
 
@@ -223,7 +356,8 @@ router.post("/upload/sequence", function (req, res) {
 
 		if (isEnough == 1) {
 
-			taskList.push(job.id);
+			// taskList.push(job.id);
+			console.log("have enough space.")
 
 			job.proteins = getNumofProteins(sequence);
 			job.size = fileSize;
@@ -271,8 +405,58 @@ router.post("/upload/sequence", function (req, res) {
 					console.log('mail sent:', info.response);
 				});
 			}
+			console.log("ready to send post request to api...")
 
+			// var options = {
+			// 	'method': 'POST',
+			// 	'url': 'http://digbio-devel.missouri.edu:5000/predict?',
+			// 	'headers': {
+			// 	},
+			// 	formData: {
+			// 	  'sequences': {
+			// 		'value': fs.createReadStream('data/upload/' + job.file),
+			// 		'options': {
+			// 		  'filename': 'data/upload/' + job.file,
+			// 		  'contentType': null
+			// 		}
+			// 	  },
+			// 	  'job_nickname': nickName,
+			// 	  'email': email,
+			// 	  'mode': 'PSSM',
+			// 	  'id': job.id
+			// 	}
+			//   };
+			
+			// request(options, function (error, response) {
+			// 	if (error) throw new Error(error);
+			// 	// console.log(response.body);
+			// });
+
+			// var formdata = new FormData();
+            // formdata.append("sequences", 'data/upload/' + job.file);
+            // formdata.append("job_nickname", nickName);
+            // formdata.append("email", email);
+            // formdata.append("mode", "PSSM");
+            // formdata.append("id", job.id);
+			// var requestOptions = {
+            //     method: 'POST',
+            //     body: formdata,
+            //     redirect: 'follow'
+            // };
+
+            // fetch("mulocdeep_api3:5000/predict?", requestOptions)
+            //    .then(response => response.text())
+            //    .then(result => console.log(result))
+            //    .catch(error => console.log('error', error));
+
+			sendMultipart('data/upload/' + job.file, nickName, email, "PSSM", job.id);
+
+			console.log("request sent...");
 			res.redirect("/upload/:" + job.id);
+
+
+
+
 		}
 		else {
 			fs.unlink('data/upload/' + job.file, function (err) {
@@ -442,6 +626,34 @@ router.post("/upload/file", function (req, res) {
 });
 
 /* -------------------------------- Functions ------------------------------- */
+
+/**
+ * post request
+ * @param {*} i
+ * @param {*} temp
+ * @param {*} callback
+ */
+function sendMultipart(filePath, job_nick, mail, mode, id) {
+    const formData = new FormData();
+    const config = { filename: path.basename(filePath), contentType: "multipart/form-data" };
+    formData.append('sequences', fs.createReadStream(filePath), config);
+    formData.append('job_nickname', job_nick);
+    formData.append('email', mail);
+    formData.append('mode', mode);
+    formData.append('id', id);
+    console.log(formData.getHeaders());
+    axios.post('http://digbio-devel.missouri.edu:5000/predict', formData, {
+        headers: formData.getHeaders()
+      })
+      .then(function (response) {
+        console.log(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      }); 
+
+}
+
 
 /**
  * async loop to calculate waiting time

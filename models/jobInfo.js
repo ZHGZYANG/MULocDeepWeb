@@ -15,7 +15,8 @@ var jobInfoSchema = new mongoose.Schema({
 	submittedTime: String,
 	ipAddress: String,
 	size: Number,
-	proteins: Number
+	proteins: Number,
+	compress: String
 });
 
 module.exports = mongoose.model("jobInfo", jobInfoSchema);

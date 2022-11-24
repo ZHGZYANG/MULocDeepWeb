@@ -21,6 +21,10 @@
     "requeest": "0.0.1-security",
     "request": "^2.88.0",
     "save": "^2.4.0",
-    "silly-datetime": "^0.1.2"
+    "silly-datetime": "^0.1.2",
+    "form-data": "^4.0.0",
+    "node-fetch": "^2.6.7",
+    "axios": "^0.27.2",
+    "fs": "^0.0.1-security"
   }
 }
