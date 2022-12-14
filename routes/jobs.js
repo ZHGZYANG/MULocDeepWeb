@@ -250,6 +250,12 @@ router.get("/jobs/:id", function (req, res) {
 	});
 });
 
+// Show visualisation
+router.get("/data/results/example/test_seq/sub_result/:predictionId", function (req, res) {
+	var predictionId = req.params.predictionId;
+	res.render("PREDICTION",{predictionId:predictionId});
+});
+
 // DOWNLOAD: download the result file
 router.get("/jobs/download/:id", function (req, res) {
 	var id = req.params.id.substr(1);

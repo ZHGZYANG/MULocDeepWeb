@@ -65,7 +65,7 @@
                 <% for (const [key, value] of Object.entries(predictions)) {%>
                     <tr>
                         <td><%= key %></td>
-                        <td><% if(value > 10) {%> <a href="https://www.google.com" target="_blank"><%= value %></a><% }else{ %><%= value %><% } %></td>
+                        <td><% if(value > 10) {%> <a href="/data/results/example/test_seq/sub_result/<%= key %>" target="_blank"><%= value %></a><% }else{ %><%= value %><% } %></td>
                     </tr>
                 <% } %>              
             </tbody>
