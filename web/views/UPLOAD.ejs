@@ -72,11 +72,11 @@
         <div class="tab-content pb-3" id="pills-tabContent">
             <div class="tab-pane fade show active" id="pills-Sequence" role="tabpanel"
                 aria-labelledby="pills-Sequence-tab">
-                <form class="prediction" action="/upload/sequence" method="POST" onsubmit="return checkSeqValid()">
+                <form id="form_sequences" class="prediction" action="/tasks/predict_sequences" enctype="multipart/form-data" method="POST" onsubmit="return checkSeqValid()">
                     <div class="form-row">
                         <div class="form-group col-12 col-lg-6">
-                            <label for="sequenceInput">Sequence</label>
-                            <textarea class="form-control" id="sequenceInput" name="sequenceInput" rows="6"
+                            <label for="sequences">Sequence</label>
+                            <textarea class="form-control" id="sequences" name="sequences" rows="6"
                                 aria-describedby="sequenceHelp" required></textarea>
                             <small id="sequenceHelp" class="form-text text-muted">The sequence(s) must in FASTA format
                                 (maximum 200 sequences).
@@ -85,33 +85,33 @@
                     </div>
                     <div class="form-row">
                         <div class="form-group col-12 col-lg-6">
-                            <label for="nickName1">Job Nickname</label>
-                            <input class="form-control" id="nickName1" name="nickName1"
+                            <label for="nickName">Job Nickname</label>
+                            <input class="form-control" id="nickName" name="nickName"
                                 aria-describedby="nickNameHelp1">
                             <small id="nickNameHelp1" class="form-text text-muted">Optional</small>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-12 col-lg-6">
-                            <label for="emailInput1"> Email address</label>
-                            <input type="email" class="form-control" id="emailInput1" name="emailInput1"
+                            <label for="email"> Email address</label>
+                            <input type="email" class="form-control" id="email" name="email"
                                 aria-describedby="emailHelp1" placeholder="Enter email">
                             <small id="emailHelp1" class="form-text text-muted">Optional. We will notify you through email when the job is done. (We'll never share your email with anyone else.)</small>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary submitBtn">Submit</button>
+                    <button type="submit" class="btn btn-primary submitBtn" id="btnSubmitSequences">Submit</button>
                     <button type="reset" class="btn btn-secondary">Reset</button>
                     <input type="button" id="sample" class="btn btn-secondary" value="Sample" />
                 </form>
             </div>
 
             <div class="tab-pane fade" id="pills-File" role="tabpanel" aria-labelledby="pills-File-tab">
-                <form class="prediction" action="/upload/file" method="POST" enctype="multipart/form-data">
+                <form id="form_file" class="prediction" action="/tasks/predict_file" method="POST" enctype="multipart/form-data">
                     <div class="form-row">
                         <div class="form-group col-12 col-lg-6">
                             <p>Upload file</p>
                             <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="fileSelect" name="fileSelect"
+                                <input type="file" class="custom-file-input" id="sequences_file" name="sequences_file"
                                     aria-describedby="fileHelp" onchange="checkFileValid()" required>
                                 <label id="fileLabel" class="custom-file-label text-truncate" for="fileSelect">Choose
                                     file</label>
@@ -123,21 +123,22 @@
 
                     <div class="form-row">
                         <div class="form-group col-12 col-lg-6">
-                            <label for="nickName2">Job NickName</label>
-                            <input class="form-control" id="nickName2" name="nickName2"
+                            <label for="nickname_f">Job NickName</label>
+                            <input class="form-control" id="nickname_f" name="nickname_f"
                                 aria-describedby="nickNameHelp2">
+                            <input id="existPSSM_f" name="existPSSM_f" type="hidden" value="./xxx">
                             <small id="nickNameHelp2" class="form-text text-muted">Optional</small>
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-12 col-lg-6">
-                            <label for="emailInput2">Email address</label>
-                            <input type="email" class="form-control" id="emailInput2" name="emailInput2"
+                            <label for="email_f">Email address</label>
+                            <input type="email" class="form-control" id="email_f" name="email_f"
                                 aria-describedby="emailHelp2" placeholder="Enter email">
                             <small id="emailHelp2" class="form-text text-muted">Optional. We will notify you through email when the job is done. (We'll never share your email with anyone else.)</small>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary submitBtn">Submit</button>
+                    <button type="submit" class="btn btn-primary submitBtn" id="btnSubmitFile">Submit</button>
                     <button id="reset" type="reset" class="btn btn-secondary">Reset</button>
                 </form>
             </div>

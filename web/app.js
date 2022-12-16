@@ -22,7 +22,14 @@ var jobInfo = require("./models/jobInfo"),
 
 /* -------------------------- mongoDB configuration ------------------------- */
 // Docker
-mongoose.connect("mongodb://mulocdeepdb3:65528/mulocdeep2");
+//mongoose.connect("mongodb://mulocdeepdb:65528/mulocdeep2");
+mongoose.connect('mongodb://mulocdeepdb:65528/mulocdeep2',(err)=>{
+   if(!err){ //Success
+      console.log('Database connect success!');
+   }else{
+      throw err;
+   }
+})
 // Local
 //mongoose.connect("mongodb://localhost:65522/mulocdeep2");
 
@@ -70,7 +77,7 @@ function asyncloopStartServer(i, docs, callback) {
 		let job = docs[i];
 		if (job.status != 'Done') {
 			deleteFolder('data/results/' + job.id);
-			fs.unlink('data/upload/' + job.file, function (err) {
+			fs.unlink(job.file, function (err) {
 				if (err) console.error(err);
 			});
 			userInfo.findOne({ ipAddress: job.ipAddress }, function (err, doc) {

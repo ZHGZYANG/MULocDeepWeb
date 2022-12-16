@@ -37,10 +37,18 @@ router.get("/upload/:id", function (req, res) {
 	jobId = jobId.substr(1); // delete the ':'
 
 	var flag = 0;
+	var number = 0;
 	// var number = taskList.length;
-	var number=jobInfo.countDocuments({ status: "Queued" });
+	jobInfo.countDocuments({ status: "Queued" }, function (err, count){
+		if (err){ 
+			console.log(err);
+		}else{ 
+			var number = count;
+			// console.log("Count:", count);
+		} 
+	});
 	// var num_procs=jobInfo.countDocuments({ status: "Processing" });
-	setTimeout( function(){jobInfo.findOne({ _id: jobId }, function (err, doc) {
+	setTimeout( function(){jobInfo.findOne({ job_id: jobId }, function (err, doc) {
 		if (err) {
 			console.error(err);
 		}
@@ -118,117 +126,117 @@ router.get("/upload/:id", function (req, res) {
 				res.render("JOBINFO", { jobId: jobId, flag: flag, number: number});
 			}
 			else if (flag == 1) {
-				jobInfo.findById(jobId, function (err, job) {
-				  if (err)
-					console.error(err);
-				  else if (job.compress == "No") {
-				//   else {
-					//  send success email 
-					let link = "<center><a href = \"http://mu-loc.org/jobs/:" + job.id + "\">";
-					if (job.email !== "") {
-						var mail = {
-							from: 'MULocDeep<mulocdeep@gmail.com>',
-							subject: 'MULocDeep: Job Infomation',
-							to: job.email,
-							text: 'Your job: ' + job.id + ' has completed!',
-							html: '<center><h2>MULocDeep</h2></center><br><center><p> Your job :</p></center><br>' +
-								link +
-								job.id + '</a></center><br>' +
-								"<center><p>has completed!</p></center>"
-						};
-						transporter.sendMail(mail, function (error, info) {
-							if (error) return console.log(error);
-							console.log('mail sent:', info.response);
-						});
-					}
+				// jobInfo.findOne({ job_id: jobId }, function (err, job) {
+				//   if (err)
+				// 	console.error(err);
+				//   else if (job.compress == "No") {
+				// //   else {
+				// 	//  send success email 
+				// 	let link = "<center><a href = \"http://mu-loc.org/jobs/:" + job.id + "\">";
+				// 	if (job.email !== "") {
+				// 		var mail = {
+				// 			from: 'MULocDeep<mulocdeep@gmail.com>',
+				// 			subject: 'MULocDeep: Job Infomation',
+				// 			to: job.email,
+				// 			text: 'Your job: ' + job.id + ' has completed!',
+				// 			html: '<center><h2>MULocDeep</h2></center><br><center><p> Your job :</p></center><br>' +
+				// 				link +
+				// 				job.id + '</a></center><br>' +
+				// 				"<center><p>has completed!</p></center>"
+				// 		};
+				// 		transporter.sendMail(mail, function (error, info) {
+				// 			if (error) return console.log(error);
+				// 			console.log('mail sent:', info.response);
+				// 		});
+				// 	}
 
-					// -----------------------
-					// Compress results data
-					// -----------------------
-					// create a file to stream archive data to.
-					var output = fs.createWriteStream('data/results/' + job.id + '/' + job.id + '.zip');
-					var archive = archiver('zip', {
-						zlib: { level: 9 } // Sets the compression level.
-					});
+				// 	// -----------------------
+				// 	// Compress results data
+				// 	// -----------------------
+				// 	// create a file to stream archive data to.
+				// 	var output = fs.createWriteStream('data/results/' + job.id + '/' + job.id + '.zip');
+				// 	var archive = archiver('zip', {
+				// 		zlib: { level: 9 } // Sets the compression level.
+				// 	});
 
-					// listen for all archive data to be written
-					// 'close' event is fired only when a file descriptor is involved
-					output.on('close', function () {
-						console.log(archive.pointer() + ' total bytes');
-						console.log('archiver has been finalized and the output file descriptor has closed.');
-						console.log('=======================================================================');
-					});
+				// 	// listen for all archive data to be written
+				// 	// 'close' event is fired only when a file descriptor is involved
+				// 	output.on('close', function () {
+				// 		console.log(archive.pointer() + ' total bytes');
+				// 		console.log('archiver has been finalized and the output file descriptor has closed.');
+				// 		console.log('=======================================================================');
+				// 	});
 
-					// This event is fired when the data source is drained no matter what was the data source.
-					// It is not part of this library but rather from the NodeJS Stream API.
-					output.on('end', function () {
-						console.log('Data has been drained');
-					});
+				// 	// This event is fired when the data source is drained no matter what was the data source.
+				// 	// It is not part of this library but rather from the NodeJS Stream API.
+				// 	output.on('end', function () {
+				// 		console.log('Data has been drained');
+				// 	});
 
-					// good practice to catch warnings (ie stat failures and other non-blocking errors)
-					archive.on('warning', function (err) {
-						if (err.code === 'ENOENT') {
-							// log warning
-						} else {
-							// throw error
-							throw err;
-						}
-					});
+				// 	// good practice to catch warnings (ie stat failures and other non-blocking errors)
+				// 	archive.on('warning', function (err) {
+				// 		if (err.code === 'ENOENT') {
+				// 			// log warning
+				// 		} else {
+				// 			// throw error
+				// 			throw err;
+				// 		}
+				// 	});
 
-					// good practice to catch this error explicitly
-					archive.on('error', function (err) {
-						var update = { $set: { status: 'error' } };
-						jobInfo.updateOne({ _id: job.id }, update, function (err, job) {
-							if (err) {
-								console.log(err);
-							}
-							else {
-								console.log("SOMETHING WENT WRONG WHEN PREDICTING!");
-								// console.log(job);
-							}
-						});
-						throw err;
-					});
+				// 	// good practice to catch this error explicitly
+				// 	archive.on('error', function (err) {
+				// 		var update = { $set: { status: 'error' } };
+				// 		jobInfo.updateOne({ job_id: job.id }, update, function (err, job) {
+				// 			if (err) {
+				// 				console.log(err);
+				// 			}
+				// 			else {
+				// 				console.log("SOMETHING WENT WRONG WHEN PREDICTING!");
+				// 				// console.log(job);
+				// 			}
+				// 		});
+				// 		throw err;
+				// 	});
 
-					// pipe archive data to the file
-					archive.pipe(output);
+				// 	// pipe archive data to the file
+				// 	archive.pipe(output);
 
-					// append a file from stream
-					var file1 = 'data/results/' + job.id + '/attention_weights.txt';
-					archive.append(fs.createReadStream(file1), { name: 'attention_weights.txt' });
-					var file2 = 'data/results/' + job.id + '/sub_cellular_prediction.txt';
-					archive.append(fs.createReadStream(file2), { name: 'sub_cellular_prediction.txt' });
-					var file3 = 'data/results/' + job.id + '/sub_organellar_prediction.txt';
-					archive.append(fs.createReadStream(file3), { name: 'sub_organellar_prediction.txt' });
+				// 	// append a file from stream
+				// 	var file1 = 'data/results/' + job.id + '/attention_weights.txt';
+				// 	archive.append(fs.createReadStream(file1), { name: 'attention_weights.txt' });
+				// 	var file2 = 'data/results/' + job.id + '/sub_cellular_prediction.txt';
+				// 	archive.append(fs.createReadStream(file2), { name: 'sub_cellular_prediction.txt' });
+				// 	var file3 = 'data/results/' + job.id + '/sub_organellar_prediction.txt';
+				// 	archive.append(fs.createReadStream(file3), { name: 'sub_organellar_prediction.txt' });
 
-					// finalize the archive (ie we are done appending files but streams have to finish yet)
-					// 'close', 'end' or 'finish' may be fired right after calling this method so register to them beforehand
-					archive.finalize();
+				// 	// finalize the archive (ie we are done appending files but streams have to finish yet)
+				// 	// 'close', 'end' or 'finish' may be fired right after calling this method so register to them beforehand
+				// 	archive.finalize();
 
-					// delete pssm folder
-					// let readDir = fs.readdirSync('data/results/' + job.id);
-					// readDir.forEach(function (item, index) {
-					// 	let stat = fs.statSync('data/results/' + job.id + '/' + item)
-					// 	if (stat.isDirectory() === true) { 
-					// 	  deleteFolder('data/results/' + job.id + '/' + item)
-					// 	  console.log('pssm folder delete...');
-					// 	}
-					// })
+				// 	// delete pssm folder
+				// 	// let readDir = fs.readdirSync('data/results/' + job.id);
+				// 	// readDir.forEach(function (item, index) {
+				// 	// 	let stat = fs.statSync('data/results/' + job.id + '/' + item)
+				// 	// 	if (stat.isDirectory() === true) { 
+				// 	// 	  deleteFolder('data/results/' + job.id + '/' + item)
+				// 	// 	  console.log('pssm folder delete...');
+				// 	// 	}
+				// 	// })
 
-					var update = { $set: { compress: "Yes"} };
-					jobInfo.updateOne({ _id: job.id }, update, function (err, u) {
-						if (err)
-							console.log(err);
-						else {
-							console.log("Job info (compress) was updated!");
-							console.log("======================================");
-						}
-					});
+				// 	var update = { $set: { compress: "Yes"} };
+				// 	jobInfo.updateOne({ job_id: job.id }, update, function (err, u) {
+				// 		if (err)
+				// 			console.log(err);
+				// 		else {
+				// 			console.log("Job info (compress) was updated!");
+				// 			console.log("======================================");
+				// 		}
+				// 	});
 
 
 
-				  }
-				});
+				//   }
+				// });
 
                     
 
@@ -244,10 +252,10 @@ router.get("/upload/:id", function (req, res) {
 router.post("/upload/email", function (req, res) {
 	let email = req.body.email.trim();
 	let jobID = req.body.jobID.trim();
-	jobInfo.findOne({ _id: jobID }, function (err, doc) {
+	jobInfo.findOne({ job_id: jobID }, function (err, doc) {
 		if (err) console.error(err);
 		let update = { $set: { email: email } };
-		jobInfo.updateOne({ _id: jobID }, update, function (err, u) {
+		jobInfo.updateOne({ job_id: jobID }, update, function (err, u) {
 			if (err)
 				console.log(err);
 			else {
@@ -260,400 +268,7 @@ router.post("/upload/email", function (req, res) {
 });
 
 
-//Deal with sequence post
-router.post("/upload/sequence", function (req, res) {
-	var sequence = req.body.sequenceInput.trim();
-	var email = req.body.emailInput1;
-	var nickName = req.body.nickName1;
-
-	var job = new jobInfo({
-		nickName: nickName,
-		sequence: sequence,
-		email: email,
-		status: "Queued",
-		// submittedTime: sd.format(new Date(), 'YYYY-MM-DD HH:mm:ss'),
-		submittedTime: "",
-		ipAddress: get_client_ip(req),
-		size: 0,
-		proteins: 0,
-		compress: "No"
-	});
-	job.file = job.id + '.fa';
-
-	// Create a new file and write the sequence in
-	console.log("Data written ready...");
-
-	fs.writeFileSync('data/upload/' + job.file, format(sequence));
-	console.log("Data written success!");
-	console.log("======================================");
-
-	// var fileSize = 0;
-	var fileSize = fs.statSync('data/upload/' + job.file).size * 30;
-	// fs.stat('data/upload/' + job.file, function (err, stats) {
-	// 	if (err)
-	// 		return console.error(err);
-	// 	var fileSize = stats.size * 30;
-
-	var isEnough = 1;
-
-	userInfo.findOne({ 'ipAddress': get_client_ip(req) }, function (err, doc) {
-		if (err)
-			console.error(err);
-		if (doc == undefined) {
-			var user = new userInfo({
-				ipAddress: get_client_ip(req),
-				capacity: fileSize,
-				query: 0,
-				proteins: 0
-			});
-
-			if (user.capacity > maxCapacity) {
-				user.capacity = 0;
-				isEnough = 0;
-			}
-			user.save(function (err, u) {
-				if (err)
-					console.error(err);
-				else {
-					console.log("Create a new user: " + get_client_ip(req));
-					console.log("======================================");
-				}
-			})
-			// ------------------
-			// get user location
-			// ------------------
-			// var locURL = "/process/location/";
-			// var locData = {ip: get_client_ip(req)};
-			request("http://ip-api.com/json/" + get_client_ip(req) + "?lang=EN", { json: true }, (err, res, body) => {
-				if (err) { return console.log(err); }
-				var update = { $set: { lat: body.lat, lon: body.lon } };
-				userInfo.updateOne({ 'ipAddress': body.query }, update, function (err, u) {
-					if (err)
-						console.log(err);
-					else {
-						console.log("User info was updated!");
-						console.log("User location: " + body.lat + ", " + body.lon);
-						console.log("======================================");
-					}
-				});
-			});
-		}
-		else {
-			if (doc.capacity + fileSize <= maxCapacity) {
-				var update = { $set: { capacity: doc.capacity + fileSize } };
-				userInfo.updateOne({ 'ipAddress': get_client_ip(req) }, update, function (err, u) {
-					if (err)
-						console.log(err);
-					else {
-						console.log("User info was updated!");
-						console.log("User size: " + (doc.capacity + fileSize));
-						console.log("======================================");
-					}
-				});
-			}
-			else isEnough = 0;
-		}
-
-		if (isEnough == 1) {
-
-			// taskList.push(job.id);
-			console.log("have enough space.")
-
-			job.proteins = getNumofProteins(sequence);
-			job.size = fileSize;
-			job.save(function (err, job) {
-				if (err) {
-					console.log("SOMETHING WENT WRONG!");
-				}
-				else {
-					console.log("job size is :" + job.size);
-					console.log("Job was saved!");
-					console.log("======================================");
-				}
-			});
-
-			// Update the number of querys of current user
-			userInfo.findOne({ 'ipAddress': get_client_ip(req) }, function (err, doc) {
-				let update = { $set: { query: doc.query + 1, proteins: doc.proteins + getNumofProteins(sequence) } };
-				userInfo.updateOne({ 'ipAddress': get_client_ip(req) }, update, function (err, u) {
-					if (err)
-						console.log(err);
-					else {
-						console.log("User info was updated!");
-						console.log("User query: " + (doc.query + 1));
-						console.log("User Proteins: " + (doc.proteins + getNumofProteins(sequence)));
-						console.log("======================================");
-					}
-				});
-			});
-
-
-			// send job ID email
-			let link = "<center><a href = \"http://mu-loc.org/upload/:" + job.id + "\">";
-			if (job.email !== "") {
-				var mail = {
-					from: 'MULocDeep<mulocdeep@gmail.com>',
-					subject: 'MULocDeep: Job Infomation',
-					to: email,
-					text: 'Your job ID is:' + job.id,
-					html: '<center><h2>MULocDeep</h2></center><br><center><p> Your job is:</p><br></center>' +
-						link +
-						job.id + '</a></center>'
-				};
-				transporter.sendMail(mail, function (error, info) {
-					if (error) return console.log(error);
-					console.log('mail sent:', info.response);
-				});
-			}
-			console.log("ready to send post request to api...")
-
-			// var options = {
-			// 	'method': 'POST',
-			// 	'url': 'http://digbio-devel.missouri.edu:5000/predict?',
-			// 	'headers': {
-			// 	},
-			// 	formData: {
-			// 	  'sequences': {
-			// 		'value': fs.createReadStream('data/upload/' + job.file),
-			// 		'options': {
-			// 		  'filename': 'data/upload/' + job.file,
-			// 		  'contentType': null
-			// 		}
-			// 	  },
-			// 	  'job_nickname': nickName,
-			// 	  'email': email,
-			// 	  'mode': 'PSSM',
-			// 	  'id': job.id
-			// 	}
-			//   };
-			
-			// request(options, function (error, response) {
-			// 	if (error) throw new Error(error);
-			// 	// console.log(response.body);
-			// });
-
-			// var formdata = new FormData();
-            // formdata.append("sequences", 'data/upload/' + job.file);
-            // formdata.append("job_nickname", nickName);
-            // formdata.append("email", email);
-            // formdata.append("mode", "PSSM");
-            // formdata.append("id", job.id);
-			// var requestOptions = {
-            //     method: 'POST',
-            //     body: formdata,
-            //     redirect: 'follow'
-            // };
-
-            // fetch("mulocdeep_api3:5000/predict?", requestOptions)
-            //    .then(response => response.text())
-            //    .then(result => console.log(result))
-            //    .catch(error => console.log('error', error));
-
-			sendMultipart('data/upload/' + job.file, nickName, email, "PSSM", job.id);
-
-			console.log("request sent...");
-			res.redirect("/upload/:" + job.id);
-
-
-
-
-		}
-		else {
-			fs.unlink('data/upload/' + job.file, function (err) {
-				if (err) console.error(err);
-			});
-			res.render("OUTSPACE");
-		}
-	});
- 
-	// });
-});
-
-//Deal with file post
-router.post("/upload/file", function (req, res) {
-
-	var email = req.body.emailInput2;
-	var nickName = req.body.nickName2;
-	// if (email !== undefined)
-	// 	console.log('email: ' + email);
-
-	var job = new jobInfo({
-		nickName: nickName,
-		email: email,
-		status: "queued",
-		// submittedTime: sd.format(new Date(), 'YYYY-MM-DD HH:mm:ss'),
-		submittedTime: moment().utcOffset("-06:00").format('YYYY-MM-DD HH:mm:ss'),
-		ipAddress: get_client_ip(req),
-		size: 0,
-		proteins: 0
-	});
-	job.file = job.id + '.fa';
-
-	var data = fs.readFileSync(req.files[0].path);
-	fs.writeFileSync('data/upload/' + job.file, format(data.toString()));
-	console.log('File: ' + req.files[0].originalname + ' uploaded successfully');
-	console.log("======================================");
-
-	fs.unlink(req.files[0].path, function (err) {
-		if (err)
-			console.error(err);
-	}); //delete the original file
-
-	var fileSize = fs.statSync('data/upload/' + job.file).size * 30;
-	// fs.stat('data/upload/' + job.file, function (err, stats) {
-	// 	if (err)
-	// 		return console.error(err);
-	// 	var fileSize = stats.size * 220;
-
-	var isEnough = 1;
-	userInfo.findOne({ 'ipAddress': get_client_ip(req) }, function (err, doc) {
-		if (err)
-			console.error(err);
-		if (doc == undefined) {
-			var user = new userInfo({
-				ipAddress: get_client_ip(req),
-				capacity: fileSize,
-				query: 0,
-				proteins: 0
-			});
-			if (user.capacity > maxCapacity) {
-				user.capacity = 0;
-				isEnough = 0;
-			}
-			user.save(function (err, u) {
-				if (err)
-					console.error(err);
-				else {
-					console.log("Create a new user: " + get_client_ip(req));
-					console.log("======================================");
-				}
-			})
-			// ------------------
-			// get user location
-			// ------------------
-			// var locURL = "/process/location/";
-			// var locData = {ip: get_client_ip(req)};
-			request("http://ip-api.com/json/" + get_client_ip(req) + "?lang=EN", { json: true }, (err, res, body) => {
-				if (err) { return console.log(err); }
-				var update = { $set: { lat: body.lat, lon: body.lon } };
-				userInfo.updateOne({ 'ipAddress': body.query }, update, function (err, u) {
-					if (err)
-						console.log(err);
-					else {
-						console.log("User info was updated!");
-						console.log("User location: " + body.lat + ", " + body.lon);
-						console.log("======================================");
-					}
-				});
-			});
-		}
-		else {
-			if (doc.capacity + fileSize <= maxCapacity) {
-				var update = { $set: { capacity: doc.capacity + fileSize } };
-				userInfo.updateOne({ 'ipAddress': get_client_ip(req) }, update, function (err, u) {
-					if (err)
-						console.log(err);
-					else {
-						console.log("User info was updated!");
-						console.log("User size: " + (doc.capacity + fileSize));
-						console.log("======================================");
-					}
-				});
-			}
-			else isEnough = 0;
-		}
-
-		if (isEnough == 1) {
-
-			taskList.push(job.id);
-
-			job.proteins = getNumofProteins(data.toString());
-			job.size = fileSize;
-			job.save(function (err, job) {
-				if (err) {
-					console.log("SOMETHING WENT WRONG!");
-				}
-				else {
-					console.log("Job was saved!");
-					console.log("job size is :" + job.size);
-					console.log("======================================");
-				}
-			});
-
-			// Update the number of querys of current user
-			userInfo.findOne({ 'ipAddress': get_client_ip(req) }, function (err, doc) {
-				let update = { $set: { query: doc.query + 1, proteins: doc.proteins + getNumofProteins(data.toString()) } };
-				userInfo.updateOne({ 'ipAddress': get_client_ip(req) }, update, function (err, u) {
-					if (err)
-						console.log(err);
-					else {
-						console.log("User info was updated!");
-						console.log("User query: " + (doc.query + 1));
-						console.log("User proteins: " + (doc.proteins + getNumofProteins(data.toString())));
-						console.log("======================================");
-					}
-				});
-			});
-
-			// send job ID email
-			let link = "<center><a href = \"http://mu-loc.org/upload/:" + job.id + "\">";
-			if (job.email !== "") {
-				var mail = {
-					from: 'MULocDeep<mulocdeep@gmail.com>',
-					subject: 'MULocDeep: Job Infomation',
-					to: email,
-					text: 'Your job ID is:' + job.id,
-					html: '<center><h2>MULocDeep</h2></center><br><center><p> Your job is:</p><br></center>' +
-						link +
-						job.id + '</a></center>'
-				};
-				transporter.sendMail(mail, function (error, info) {
-					if (error) return console.log(error);
-					console.log('mail sent:', info.response);
-				});
-			}
-
-			res.redirect("/upload/:" + job.id);
-		}
-		else {
-			fs.unlink('data/upload/' + job.file, function (err) {
-				if (err) console.error(err);
-			});
-			res.render("OUTSPACE");
-		}
-	});
-	// });
-});
-
 /* -------------------------------- Functions ------------------------------- */
-
-/**
- * post request
- * @param {*} i
- * @param {*} temp
- * @param {*} callback
- */
-function sendMultipart(filePath, job_nick, mail, mode, id) {
-    const formData = new FormData();
-    const config = { filename: path.basename(filePath), contentType: "multipart/form-data" };
-    formData.append('sequences', fs.createReadStream(filePath), config);
-    formData.append('job_nickname', job_nick);
-    formData.append('email', mail);
-    formData.append('mode', mode);
-    formData.append('id', id);
-    console.log(formData.getHeaders());
-    axios.post('http://digbio-devel.missouri.edu:5000/predict', formData, {
-        headers: formData.getHeaders()
-      })
-      .then(function (response) {
-        console.log(response.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      }); 
-
-}
-
 
 /**
  * async loop to calculate waiting time
@@ -664,7 +279,7 @@ function sendMultipart(filePath, job_nick, mail, mode, id) {
  */
 function asyncloopCalculateTime(i, temp, callback) {
 	if (i < taskList.length) {
-		jobInfo.findOne({ _id: taskList[i] }, function (err, doc) {
+		jobInfo.findOne({ job_id: taskList[i] }, function (err, doc) {
 			temp = temp + doc.proteins;
 			asyncloopCalculateTime(i + 1, temp, callback);
 		})

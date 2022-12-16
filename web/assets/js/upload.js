@@ -17,10 +17,97 @@ $('#reset').click(function () {
 
 // Sample button
 $('#sample').click(function () {
-    $('#sequenceInput').val('>P03070\nMDKVLNREESLQLMDLLGLERSAWGNIPLMRKAYLKKCKEFHPDKGGDEEKMKKMNTLYKKMEDGVKYAHQPDFGGFWDATEIPTYGTDEWEQWWNAFNEENLFCSEEMPSSDDEATADSQHSTPPKKKRKVEDPKDFPSELLSFLSHAVFSNRTLACFAIYTTKEKAALLYKKIMEKYSVTFISRHNSYNHNILFFLTPHRHRVSAINNYAQKLCTFSFLICKGVNKEYLMYSALTRDPFSVIEESLPGGLKEHDFNPEEAEETKQVSWKLVTEYAMETKCDDVLLLLGMYLEFQYSFEMCLKCIKKEQPSHYKYHEKHYANAAIFADSKNQKTICQQAVDTVLAKKRVDSLQLTREQMLTNRFNDLLDRMDIMFGSTGSADIEEWMAGVAWLHCLLPKMDSVVYDFLKCMVYNIPKKRYWLFKGPIDSGKTTLAAALLELCGGKALNVNLPLDRLNFELGVAIDQFLVVFEDVKGTGGESRDLPSGQGINNLDNLRDYLDGSVKVNLEKKHLNKRTQIFPPGIVTMNEYSVPKTLQARFVKQIDFRPKDYLKHCLERSEFLLEKRIIQSGIALLLMLIWYRPVAEFAQSIQSRIVEWKERLDKEFSLSVYQKMKFNVAMGIGVLDWLRNSDDDDEDSQENADKNEDGGEKNMEDSGHETGIDSQSQGSFQAPQSSQSVHDHNQPYHICRGFTCFKKPPTPPPEPET\n>P10238\nMATDIDMLIDLGLDLSDSDLDEDPPEPAESRRDDLESDSSGECSSSDEDMEDPHGEDGPEPILDAARPAVRPSRPEDPGVPSTQTPRPTERQGPNDPQPAPHSVWSRLGARRPSCSPEQHGGKVARLQPPPTKAQPARGGRRGRRRGRGRGGPGAADGLSDPRRRAPRTNRNPGGPRPGAGWTDGPGAPHGEAWRGSEQPDPPGGQRTRGVRQAPPPLMTLAIAPPPADPRAPAPERKAPAADTIDATTRLVLRSISERAAVDRISESFGRSAQVMHDPFGGQPFPAANSPWAPVLAGQGGPFDAETRRVSWETLVAHGPSLYRTFAGNPRAASTAKAMRDCVLRQENFIEALASADETLAWCKMCIHHNLPLRPQDPIIGTTAAVLDNLATRLRPFLQCYLKARGLCGLDELCSRRRLADIKDIASFVFVILARLANRVERGVAEIDYATLGVGVGEKMHFYLPGACMAGLIEILDTHRQECSSRVCELTASHIVAPPYVHGKYFYCNSLF\n>P09462\nMMSFVSLLLVGILFHATQAEQLTKCEVFQELKDLKDYGGVSLPEWVCTAFHTSGYDTQAIVQNNDSTEYGLFQINNKIWCKDDQNPHSRNICNISCDKFLDDDLTDDIMCVKKILDKVGINYWLAHKALCSEKLDQWLCEKL\n>P04037\nMLSLRQSIRFFKPATRTLCSSRYLLQQKPVVKTAQNLAEVNGPETLIGPGAKEGTVPTDLDQETGLARLELLGKLEGIDVFDTKPLDSSRKGTMKDPIIIESYDDYRYVGCTGSPAGSHTIMWLKPTVNEVARCWECGSVYKLNPVGVPNDDHHH\n>P11893\nMVAMAMASLQSSMSSLSLSSNSFLGQPLSPITLSPFLQGKPTEKKCLIVMKLKRWERKECKPNSLPVLHKLHVKVGDTVKVISGHEKGQIGEITKIFKHNSSVIVKDINLKTKHVKSNQEGEPGQINKVEAPIHSSNVMLYSKEKDVTSRVGHKVLENGKRVRYLIKTGEIIDSEENWKKLKEANKKTAEVAAT');
-    $('#nickName1').val('Example Case');
-    $('#emailInput1').val('examplecase@MULocDeep.com');
+    $('#sequences').val('>P03070\nMDKVLNREESLQLMDLLGLERSAWGNIPLMRKAYLKKCKEFHPDKGGDEEKMKKMNTLYKKMEDGVKYAHQPDFGGFWDATEIPTYGTDEWEQWWNAFNEENLFCSEEMPSSDDEATADSQHSTPPKKKRKVEDPKDFPSELLSFLSHAVFSNRTLACFAIYTTKEKAALLYKKIMEKYSVTFISRHNSYNHNILFFLTPHRHRVSAINNYAQKLCTFSFLICKGVNKEYLMYSALTRDPFSVIEESLPGGLKEHDFNPEEAEETKQVSWKLVTEYAMETKCDDVLLLLGMYLEFQYSFEMCLKCIKKEQPSHYKYHEKHYANAAIFADSKNQKTICQQAVDTVLAKKRVDSLQLTREQMLTNRFNDLLDRMDIMFGSTGSADIEEWMAGVAWLHCLLPKMDSVVYDFLKCMVYNIPKKRYWLFKGPIDSGKTTLAAALLELCGGKALNVNLPLDRLNFELGVAIDQFLVVFEDVKGTGGESRDLPSGQGINNLDNLRDYLDGSVKVNLEKKHLNKRTQIFPPGIVTMNEYSVPKTLQARFVKQIDFRPKDYLKHCLERSEFLLEKRIIQSGIALLLMLIWYRPVAEFAQSIQSRIVEWKERLDKEFSLSVYQKMKFNVAMGIGVLDWLRNSDDDDEDSQENADKNEDGGEKNMEDSGHETGIDSQSQGSFQAPQSSQSVHDHNQPYHICRGFTCFKKPPTPPPEPET\n>P10238\nMATDIDMLIDLGLDLSDSDLDEDPPEPAESRRDDLESDSSGECSSSDEDMEDPHGEDGPEPILDAARPAVRPSRPEDPGVPSTQTPRPTERQGPNDPQPAPHSVWSRLGARRPSCSPEQHGGKVARLQPPPTKAQPARGGRRGRRRGRGRGGPGAADGLSDPRRRAPRTNRNPGGPRPGAGWTDGPGAPHGEAWRGSEQPDPPGGQRTRGVRQAPPPLMTLAIAPPPADPRAPAPERKAPAADTIDATTRLVLRSISERAAVDRISESFGRSAQVMHDPFGGQPFPAANSPWAPVLAGQGGPFDAETRRVSWETLVAHGPSLYRTFAGNPRAASTAKAMRDCVLRQENFIEALASADETLAWCKMCIHHNLPLRPQDPIIGTTAAVLDNLATRLRPFLQCYLKARGLCGLDELCSRRRLADIKDIASFVFVILARLANRVERGVAEIDYATLGVGVGEKMHFYLPGACMAGLIEILDTHRQECSSRVCELTASHIVAPPYVHGKYFYCNSLF\n>P09462\nMMSFVSLLLVGILFHATQAEQLTKCEVFQELKDLKDYGGVSLPEWVCTAFHTSGYDTQAIVQNNDSTEYGLFQINNKIWCKDDQNPHSRNICNISCDKFLDDDLTDDIMCVKKILDKVGINYWLAHKALCSEKLDQWLCEKL\n>P04037\nMLSLRQSIRFFKPATRTLCSSRYLLQQKPVVKTAQNLAEVNGPETLIGPGAKEGTVPTDLDQETGLARLELLGKLEGIDVFDTKPLDSSRKGTMKDPIIIESYDDYRYVGCTGSPAGSHTIMWLKPTVNEVARCWECGSVYKLNPVGVPNDDHHH\n>P11893\nMVAMAMASLQSSMSSLSLSSNSFLGQPLSPITLSPFLQGKPTEKKCLIVMKLKRWERKECKPNSLPVLHKLHVKVGDTVKVISGHEKGQIGEITKIFKHNSSVIVKDINLKTKHVKSNQEGEPGQINKVEAPIHSSNVMLYSKEKDVTSRVGHKVLENGKRVRYLIKTGEIIDSEENWKKLKEANKKTAEVAAT');
+    $('#nickName').val('Example Case');
+    $('#email').val('examplecase@MULocDeep.com');
 })
+
+/**
+ * Submit form for sequences
+ *
+ * @returns
+ */
+$("#btnSubmitSequences").click(function (event) {
+    //stop submit the form, we will post it manually.
+    event.preventDefault();
+
+    // Get form
+    var form = $('#form_sequences')[0];
+
+    // FormData object 
+    var data = new FormData(form);
+    
+    if(checkSeqValid()){
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            async: false,
+            // crossDomain: true,
+            url: "/tasks/predict_sequences" ,
+            data: data,
+            processData: false,
+            contentType: false,
+            // cache: false,
+            beforeSend: function () {
+                $("#btnSubmitSequences").attr({ disabled: "true" });
+            },
+            success: function (result) {
+                console.log(result);
+                var url = "/upload/:" + result["job_id"];
+                $(location).attr('href',url);
+            },
+            error : function(error) {
+                console.log(JSON.stringify(error));
+                $('#errorModalBody').text(JSON.parse(error["responseText"])["error"]);
+                $('#errorModal').modal('show');
+                $("#btnSubmitSequences").attr({ disabled: "false" });
+            }
+        });
+    }
+});
+
+
+/**
+ * Submit form for file
+ *
+ * @returns
+ */
+$("#btnSubmitFile").click(function (event) {
+    //stop submit the form, we will post it manually.
+    event.preventDefault();
+
+    // Get form
+    var form = $('#form_file')[0];
+
+    // FormData object 
+    var data = new FormData(form);
+
+    $.ajax({
+        type: "POST",
+        dataType: "json",
+        async: false,
+        // crossDomain: true,
+        url: "/tasks/predict_file" ,
+        data: data,
+        processData: false,
+        contentType: false,
+        // cache: false,
+        beforeSend: function () {
+            $("#btnSubmitFile").attr({ disabled: "true" });
+        },
+        success: function (result) {
+            console.log(result);
+            var url = "/upload/:" + result["job_id"];
+            $(location).attr('href',url);
+        },
+        error : function(error) {
+            console.log(JSON.stringify(error));
+            $('#errorModalBody').text(JSON.parse(error["responseText"])["error"]);
+            $('#errorModal').modal('show');
+            $("#btnSubmitFile").attr({ disabled: "false" });
+        }
+    });
+});
 
 
 /**
@@ -29,9 +116,9 @@ $('#sample').click(function () {
  * @returns
  */
 function checkSeqValid() {
-    let seq = $('#sequenceInput').val().trim();
+    let seq = $('#sequences').val().trim();
     if (!seq){
-        $('#errorModalBody').text("Query cannot be empty.");
+        $('#errorModalBody').text("Query cannot be empty!");
         $('#errorModal').modal('show');
         return false;
     }
@@ -86,11 +173,11 @@ function checkSeqValid() {
  *
  */
 function checkFileValid() {
-    let objFile = document.getElementById("fileSelect");
+    let objFile = document.getElementById("sequences_file");
 
     // console.log(objFile.files[0].size); // 文件字节数
 
-    let files = $('#fileSelect').prop('files');//获取到文件列表
+    let files = $('#sequences_file').prop('files');//获取到文件列表
 
     let reader = new FileReader();//新建一个FileReader
     reader.readAsText(files[0], "UTF-8");//读取文件
@@ -98,7 +185,7 @@ function checkFileValid() {
 
         let seq = evt.target.result.trim(); // 读取文件内容
         if (!seq){
-            $('#errorModalBody').text("Query cannot be empty.");
+            $('#errorModalBody').text("Query cannot be empty!");
             $('#errorModal').modal('show');
             return false;
         }

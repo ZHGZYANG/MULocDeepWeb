@@ -227,11 +227,11 @@ router.get("/jobs/download/:id", function (req, res) {
 
 // DELETE: delete the selected job
 router.post("/jobs/delete/:id", function (req, res) {
-	var job = req.params.id.substr(1);
+	var jobId = req.params.id.substr(1);
 	// console.log(job);
 
 	// delete jobs
-	jobInfo.findOne({ _id: job }, function (err, doc) {
+	jobInfo.findOne({ job_id: jobId }, function (err, doc) {
 		if (err)
 			return console.error(err);
 		if (doc != undefined) {
@@ -254,13 +254,13 @@ router.post("/jobs/delete/:id", function (req, res) {
 
 			var dFile = doc.file;
 			deleteFolder('data/results/' + doc.id);
-			fs.unlink('data/upload/' + dFile, function (err) {
+			fs.unlink(dFile, function (err) {
 				if (err) console.error(err);
 			});
 		}
-		return console.log("Delete files of the job: " + job);
+		return console.log("Delete files of the job: " + jobId);
 	});
-	jobInfo.deleteOne({ _id: job }, function (err) {
+	jobInfo.deleteOne({ job_id: jobId }, function (err) {
 		if (err)
 			return console.error(err);
 		console.log("Delete log of the job:" + job);

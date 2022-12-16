@@ -1,0 +1,3 @@
+python predict.py -input ./test/wiki_seq.txt -output ./test/result --no-att
+
+predict ./Predict/wiki/wiki_seq.txt ./Predict/wiki/wiki_pssm/

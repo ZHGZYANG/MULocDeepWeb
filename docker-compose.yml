@@ -1,28 +1,203 @@
-version: '3'
+version: '3.8'
 
 services:
   mongodb:
-    container_name: mulocdeepdb2
+    container_name: mulocdeepdb
     image: mongo:4.2.1
     restart: always
-    command: mongod --port 65522
+    command: mongod --port 65528
     ports:
-      - "127.0.0.1:65522:65522"
+      - 65528:65528
     volumes:
-      - ~/data/db:/data/db
+      - /ps/code/db:/data/db
     networks:
-      - webapp-network
-  web:
-    build: .
-    container_name: mulocdeepweb2
-    image: mulocdeep/mulocdeepweb2
-    restart: always
+      - muloc-network
+
+  mongo-express:
+    image: mongo-express:latest
+    container_name: mongo-express
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mulocdeepdb
+      ME_CONFIG_MONGODB_PORT: "65528"
     ports:
-      - '127.0.0.1:8083:8083'
+      - "0.0.0.0:8081:8081"
     depends_on:
       - mongodb
     networks:
-      - webapp-network
+      - muloc-network
+
+  redis:
+    image: "redis:6-alpine"
+    hostname: redis
+    command: redis-server --port 6381 --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    ports:
+      # - 6379:6379
+      - 6381:6381
+    networks:
+      - muloc-network
+
+  rabbitmq:
+    image: "rabbitmq:management"
+    container_name: rabbitmq 
+    ports:
+      - 5672:5672
+      - 15672:15672
+    env_file:
+      - ./rabbitmq.env
+    volumes:
+      - /ps/code/db/rabbitmq/data/:/var/lib/rabbitmq/
+      - /ps/code/db/rabbitmq/log/:/var/log/rabbitmq
+    networks:
+      - muloc-network
+
+  nginx-gateway:
+    image: nginx:stable-alpine
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      # - /etc/ssl:/etc/ssl
+    ports:
+      # - 80:80
+      - 8092:8092
+      # - 443:443
+    restart: always
+    networks:
+      - muloc-network
+
+
+  web:
+    build: 
+      context: ./web/
+      dockerfile: Dockerfile
+    container_name: mulocdeepweb
+    image: mulocdeep/mulocdeepweb
+    restart: always
+    ports:
+      - 8083:8083
+    volumes:
+      - Predictions:/app/data/results
+      - Uploads:/app/data/upload
+    depends_on:
+      - mongodb
+    networks:
+      - muloc-network
+
+  celery-api:
+    build:
+      context: ./flask_api/
+      dockerfile: Dockerfile
+    container_name: mulocdeep_celery_api
+    command: python3 manage.py run -h 0.0.0.0
+    restart: always
+    ports:
+      - 5000:5000
+    volumes:
+      - Predictions:/data/results
+      - Uploads:/data/upload
+    networks:
+      - muloc-network
+    env_file:
+      - .env
+    depends_on:
+      - mongodb
+      - redis
+      - rabbitmq
+
+  worker1:
+    build:
+      context: ./flask_api/
+      dockerfile: Dockerfile
+    container_name: mulocdeep_worker1
+    command: celery --app project.server.tasks.celery worker --loglevel=info --logfile=project/logs/celery.log -P gevent
+    # command: celery --app project.server.tasks.celery worker --loglevel=info --logfile=project/logs/celery.log -P gevent
+    # command: celery multi start 3 -A project.server.tasks.celery worker -l info
+    env_file:
+      - .env
+    deploy:
+      resources:
+         limits:
+            cpus: "2"
+    volumes:
+      - Predictions:/data/results
+      - Uploads:/data/upload
+    networks:
+      - muloc-network
+    depends_on:
+      - mongodb
+      - redis
+      - rabbitmq
+      - celery-api
+
+  worker2:
+    build:
+      context: ./flask_api/
+      dockerfile: Dockerfile
+    container_name: mulocdeep_worker2
+    command: celery --app project.server.tasks.celery worker --loglevel=info --logfile=project/logs/celery.log -P gevent
+    # command: celery --app project.server.tasks.celery worker --loglevel=info --logfile=project/logs/celery.log -P gevent
+    # command: celery multi start 3 -A project.server.tasks.celery worker -l info
+    env_file:
+      - .env
+    deploy:
+      resources:
+         limits:
+            cpus: "2"
+    volumes:
+      - Predictions:/data/results
+      - Uploads:/data/upload
+    networks:
+      - muloc-network
+    depends_on:
+      - mongodb
+      - redis
+      - rabbitmq
+      - celery-api
+
+  worker3:
+    build:
+      context: ./flask_api/
+      dockerfile: Dockerfile
+    container_name: mulocdeep_worker3
+    command: celery --app project.server.tasks.celery worker --loglevel=info --logfile=project/logs/celery.log -P gevent
+    # command: celery --app project.server.tasks.celery worker --loglevel=info --logfile=project/logs/celery.log -P gevent
+    # command: celery multi start 3 -A project.server.tasks.celery worker -l info
+    env_file:
+      - .env
+    deploy:
+      resources:
+         limits:
+            cpus: "2"
+    volumes:
+      - Predictions:/data/results
+      - Uploads:/data/upload
+    networks:
+      - muloc-network
+    depends_on:
+      - mongodb
+      - redis
+      - rabbitmq
+      - celery-api
+
+  dashboard:
+    build:
+      context: ./flask_api/
+      dockerfile: Dockerfile
+    container_name: mulocdeep_dashboard
+    command: celery --app project.server.tasks.celery flower --port=5555 --broker=amqp://admin:eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81@rabbitmq:5672//
+    ports:
+      - 5555:5555
+    env_file:
+      - .env
+    depends_on:
+      - celery-api
+      - rabbitmq
+      - redis
+    networks:
+      - muloc-network
+
 networks:
-  webapp-network:
+  muloc-network:
     driver: bridge
+
+volumes:
+  Predictions: 
+  Uploads:

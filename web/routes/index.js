@@ -366,7 +366,7 @@ function asyncLoopScheduleClean(i, docs, callback) {
 				if (err)
 					console.error(err);
 				deleteFolder('data/results/' + dID);
-				fs.unlink('data/upload/' + dFile, function (err) {
+				fs.unlink(dFile, function (err) {
 					if (err) console.error(err);
 				});
 				asyncLoopScheduleClean(i + 1, docs, callback);
