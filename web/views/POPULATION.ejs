@@ -1,0 +1,55 @@
+<% include partials/header %>
+
+<link rel="stylesheet" type="text/css" href="/css/show.css">
+
+<div class="wrapper">
+    <nav class="navbar navbar-expand-md navbar-dark bg-primary">
+        <div class="container col-12 col-lg-8">
+            <a class="navbar-brand" href="/">MULocDeep</a>
+            <button class="navbar-toggler ml-3" type="button" data-toggle="collapse"
+                data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/jobs"><i class="fas fa-search"></i> Search </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/jobs/all"><i class="fas fa-list"></i> Status </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/jobs/example"><i class="fas fa-envelope-open-text"></i> Example </a>
+                    </li>
+                    <!-- <li class="nav-item">
+                        <a class="nav-link" href="/contact"><i class="fas fa-phone-square-alt"></i> Contact </a>
+                    </li> -->
+                    <!-- <li class="nav-item">
+                        <a class="nav-link" href="/map"><i class="fas fa-globe-americas"></i> Map </a>
+                    </li> -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="/tools"><i class="fas fa-toolbox"></i> Other Tools </a>
+                    </li>
+                </ul>
+            </div>
+            <button class="btn btn-sm btn-outline-light my-2 my-sm-0" href="javascript:void(0);"
+                onclick="javascript:startIntro();">HELP</button>
+        </div>
+    </nav>
+    <div class="main_container">
+        <img src="/data/results/<%= jobId %>/<%= predictionId %>/C_ratio_50.png" style="padding-left: 30px;">
+        <!-- <figcaption style="padding-left: 30px;">C_Ratio_50 Image for <%= predictionId %> </figcaption> -->
+        <img src="/data/results/<%= jobId %>/<%= predictionId %>/C_terminal_50.png" style="padding-left: 30px;"><br>
+        <img src="/data/results/<%= jobId %>/<%= predictionId %>/N_ratio_50.png" style="padding-left: 30px;">
+        <img src="/data/results/<%= jobId %>/<%= predictionId %>/N_terminal_50.png" style="padding-left: 30px;"><br>
+    </div>
+
+
+    <script type="text/javascript" src="/js/show.js"></script>
+    <script type="text/javascript" src="/lib/canvasjs.min.js"></script>
+
+
+
+    <% include partials/footer%>

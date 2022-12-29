@@ -5,13 +5,9 @@
 /* -------------------------------------------------------------------------- */
 
 /* ------------------------------- Parameters ------------------------------- */
-var request = require('request');
+
 var express = require("express");
 var router = express.Router({ mergeParams: true });
-var FormData = require('form-data');
-var axios = require('axios').default;
-var path = require('path');
-// const fetch = require('node-fetch');
 var sd = require("silly-datetime"),
 	fs = require("fs"),
 	moment = require("moment"),
@@ -37,7 +33,7 @@ router.get("/upload/:id", function (req, res) {
 	jobId = jobId.substr(1); // delete the ':'
 
 	var flag = 0;
-	var number = 0;
+	var number = 1;
 	// var number = taskList.length;
 	jobInfo.countDocuments({ status: "Queued" }, function (err, count){
 		if (err){ 
@@ -63,7 +59,7 @@ router.get("/upload/:id", function (req, res) {
 			}
 			else if (doc.status === 'Failed') {
 				flag = 2;
-			} 
+			}
 	
 			// =================================
 			// Calculating estimated waiting time 
@@ -126,117 +122,7 @@ router.get("/upload/:id", function (req, res) {
 				res.render("JOBINFO", { jobId: jobId, flag: flag, number: number});
 			}
 			else if (flag == 1) {
-				// jobInfo.findOne({ job_id: jobId }, function (err, job) {
-				//   if (err)
-				// 	console.error(err);
-				//   else if (job.compress == "No") {
-				// //   else {
-				// 	//  send success email 
-				// 	let link = "<center><a href = \"http://mu-loc.org/jobs/:" + job.id + "\">";
-				// 	if (job.email !== "") {
-				// 		var mail = {
-				// 			from: 'MULocDeep<mulocdeep@gmail.com>',
-				// 			subject: 'MULocDeep: Job Infomation',
-				// 			to: job.email,
-				// 			text: 'Your job: ' + job.id + ' has completed!',
-				// 			html: '<center><h2>MULocDeep</h2></center><br><center><p> Your job :</p></center><br>' +
-				// 				link +
-				// 				job.id + '</a></center><br>' +
-				// 				"<center><p>has completed!</p></center>"
-				// 		};
-				// 		transporter.sendMail(mail, function (error, info) {
-				// 			if (error) return console.log(error);
-				// 			console.log('mail sent:', info.response);
-				// 		});
-				// 	}
-
-				// 	// -----------------------
-				// 	// Compress results data
-				// 	// -----------------------
-				// 	// create a file to stream archive data to.
-				// 	var output = fs.createWriteStream('data/results/' + job.id + '/' + job.id + '.zip');
-				// 	var archive = archiver('zip', {
-				// 		zlib: { level: 9 } // Sets the compression level.
-				// 	});
-
-				// 	// listen for all archive data to be written
-				// 	// 'close' event is fired only when a file descriptor is involved
-				// 	output.on('close', function () {
-				// 		console.log(archive.pointer() + ' total bytes');
-				// 		console.log('archiver has been finalized and the output file descriptor has closed.');
-				// 		console.log('=======================================================================');
-				// 	});
-
-				// 	// This event is fired when the data source is drained no matter what was the data source.
-				// 	// It is not part of this library but rather from the NodeJS Stream API.
-				// 	output.on('end', function () {
-				// 		console.log('Data has been drained');
-				// 	});
-
-				// 	// good practice to catch warnings (ie stat failures and other non-blocking errors)
-				// 	archive.on('warning', function (err) {
-				// 		if (err.code === 'ENOENT') {
-				// 			// log warning
-				// 		} else {
-				// 			// throw error
-				// 			throw err;
-				// 		}
-				// 	});
-
-				// 	// good practice to catch this error explicitly
-				// 	archive.on('error', function (err) {
-				// 		var update = { $set: { status: 'error' } };
-				// 		jobInfo.updateOne({ job_id: job.id }, update, function (err, job) {
-				// 			if (err) {
-				// 				console.log(err);
-				// 			}
-				// 			else {
-				// 				console.log("SOMETHING WENT WRONG WHEN PREDICTING!");
-				// 				// console.log(job);
-				// 			}
-				// 		});
-				// 		throw err;
-				// 	});
-
-				// 	// pipe archive data to the file
-				// 	archive.pipe(output);
-
-				// 	// append a file from stream
-				// 	var file1 = 'data/results/' + job.id + '/attention_weights.txt';
-				// 	archive.append(fs.createReadStream(file1), { name: 'attention_weights.txt' });
-				// 	var file2 = 'data/results/' + job.id + '/sub_cellular_prediction.txt';
-				// 	archive.append(fs.createReadStream(file2), { name: 'sub_cellular_prediction.txt' });
-				// 	var file3 = 'data/results/' + job.id + '/sub_organellar_prediction.txt';
-				// 	archive.append(fs.createReadStream(file3), { name: 'sub_organellar_prediction.txt' });
-
-				// 	// finalize the archive (ie we are done appending files but streams have to finish yet)
-				// 	// 'close', 'end' or 'finish' may be fired right after calling this method so register to them beforehand
-				// 	archive.finalize();
-
-				// 	// delete pssm folder
-				// 	// let readDir = fs.readdirSync('data/results/' + job.id);
-				// 	// readDir.forEach(function (item, index) {
-				// 	// 	let stat = fs.statSync('data/results/' + job.id + '/' + item)
-				// 	// 	if (stat.isDirectory() === true) { 
-				// 	// 	  deleteFolder('data/results/' + job.id + '/' + item)
-				// 	// 	  console.log('pssm folder delete...');
-				// 	// 	}
-				// 	// })
-
-				// 	var update = { $set: { compress: "Yes"} };
-				// 	jobInfo.updateOne({ job_id: job.id }, update, function (err, u) {
-				// 		if (err)
-				// 			console.log(err);
-				// 		else {
-				// 			console.log("Job info (compress) was updated!");
-				// 			console.log("======================================");
-				// 		}
-				// 	});
-
-
-
-				//   }
-				// });
+				
 
                     
 

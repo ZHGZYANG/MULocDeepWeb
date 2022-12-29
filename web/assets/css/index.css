@@ -1,18 +1,156 @@
-#map {
+.container.col.mb-2{
+height:33%;
+}
+
+.whatsnew{
+height:80%;
+}
+.whatsnew embed{
+/* height:100px; */  /* whatsnew size increase */
+height:100%;
+width:410px;
+overflow:auto;
+}
+
+/* #map{
+      background-color: white !important;
+      position: absolute;
+      top: 8%;
+      width: 84%;
+      margin-left: auto;
+      margin-right: auto;
+}
+
+#welcomeCard{
+    max-width: 50%;
+    font-size: 6px;
     position: absolute;
-    height: 90%;
-    width: 100%;
-    left: 0;
-    right: 0;
-  }
+    top: 18%;
+    left: 20%;
+    z-index: 999;
+} */
+
+#map {
+  position: absolute;
+  height: 92%;
+  width: 100%;
+  left: 0;
+  right: 0;
+  /* top:50%; */
+  z-index: 999;
+  margin-top: -115px;
+  background-color: white !important;
+}
+
+
+
 
 #welcomeCard {
-    position: absolute;
-    z-index: 1;
-    top: 30%;
-    left: 0;
-    right: 0;
-    /* bottom: 0;
-    margin: auto; */
-    height: fit-content;
+  position: absolute;
+  z-index: 1;
+  top: 20%;
+  left: 0;
+  right: 0;
+  /* bottom: 0;
+  margin: auto; */
+  height: fit-content;
+  
+  max-width: fit-content;
+}
+
+#map-cont{
+/* height: 245px;
+margin: 120px 30px 30px 30px;
+width: max-content; */
+margin-top: 5px;
+margin-bottom: 5px;
+}
+
+/* .map-welcome{
+font-size: 6px;
+max-width: 50% !important;
+} */
+
+.mt-number-animate{
+line-height: 15px;
+height: 18px;
+}
+
+.mt-number-animate-dom{
+font-size: x-small;
+}
+
+#mode_div{
+  padding-left: 10px;
+  font-size: 14px;
+}
+
+
+@media screen and (max-width:1230px){
+.jumbotron.jumbotron-fluid.text-center.py-0 .container .row.align-items-center{
+  display: flex;
+  flex-direction: column;
+}
+.container.my-0 .row.justify-content-center{
+  display: flex;
+  flex-direction: column;
+}
+
+.container.my-0 .row.justify-content-center .container.col-5.offset-md-1{
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 25px;
+  max-width: 75%;
+}
+.container.my-0 .row.justify-content-center .container.border.rounded.shadow-lg.col-6{
+  max-width: 75%;
+}
+
+.container.col-8{
+  max-width: 100%;
+}
+.container.col-4{
+  max-width: 100%;
+}
+
+.whatsnew embed{
+  height:100px;
+  width:410px;
+  overflow:auto;
+  width: -webkit-fill-available;
+}
+
+/* #map-cont{
+  height: 50px;
+  margin: 120px 30px 30px 30px;
+  width: max-content;
+} */
+#map-cont #map {
+  width:max-content;
+  /*  */
+  position: absolute;
+  height: 92%;
+  left: 0;
+  right: 0;
+  /* top:50%; */
+  z-index: 999;
+  margin-top: -115px;
+  background-color: white !important;
+}
+
+
+
+#welcomeCard{
+  max-width: fit-content!important;
+}
+
+/* .container.col-4{
+  margin-left: auto;
+  margin-right: auto;
+
+} */
+/* .map-welcome{
+  font-size: 6px;
+  max-width: max-content!important;
+} */
 }

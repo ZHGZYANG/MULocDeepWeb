@@ -219,7 +219,7 @@ Visit http://localhost:8082/ to check
 1. The current version of MULocDeep webserver. Added citation. 
 
 ## Contacts
-Our webserver/stand-alone package are free of charge for academic users; other users are requested to contact the corresponding author of this work at
+MULocDeep webservice/stand-alone package are free of charge for academic users; other users are requested to contact the corresponding author of this work at
   - Email: xudong@missouri.edu
 
 If you ever have any question or problem using our tool, please contact us.

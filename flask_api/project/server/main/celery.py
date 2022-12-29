@@ -80,10 +80,10 @@ def predict_sequences():
     
     job_nickname = request.form.get('nickName')
     email = request.form.get('email')
-    # mode = request.form.get('existPSSM')
-    mode = "PSSM"
-    #species = request.form.get('species')
-    species = "fungi"
+    mode = request.form.get('mode_type')
+    # mode = "PSSM"
+    species = request.form.get('species_type')
+    # species = "fungi"
     submittedTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
     initialStatus = 'Queued'
     job_id, filepath, output_dir = get_unique_id(ipAddress)
@@ -188,10 +188,10 @@ def predict_file():
         ipAddress = request.remote_addr
     job_nickname = request.form.get('nickname_f')
     email = request.form.get('email_f')
-    # mode = request.form.get('existPSSM')
-    mode = "PSSM"
-    #species = request.form.get('species')
-    species = "fungi"
+    mode = request.form.get('mode_type_f')
+    # mode = "PSSM"
+    species = request.form.get('species_type_f')
+    # species = "fungi"
     submittedTime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
     initialStatus = 'Queued'
     

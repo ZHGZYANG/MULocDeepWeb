@@ -146,6 +146,51 @@ router.get("/jobs/:id", function (req, res) {
 				};
 				cellular.push(cur);
 			}
+
+			var arr_predict = fs.readFileSync('data/results/' + jobId + '/sub_cellular_prediction.txt').toString().split('>');
+			var predictions = {};
+			for (var i = 1; i < arr_predict.length; i++) {
+				let strarr = arr_predict[i].replace(/^[\n|\r\n]*|[\n|\r\n]*$/g, '').replace('/\r\n|\n\r|[\n\r]/', '').split('\t');
+				// console.log(strarr);
+				let name = '>' + strarr[0].replace(':', '');
+
+				let predict = {
+					seqName: name,
+					Nucleus: parseFloat(parseFloat(strarr[1].substring(strarr[1].indexOf(':') + 1)).toFixed(5)),
+					Cytoplasm: parseFloat(parseFloat(strarr[2].substring(strarr[2].indexOf(':') + 1)).toFixed(5)),
+					Secreted: parseFloat(parseFloat(strarr[3].substring(strarr[3].indexOf(':') + 1)).toFixed(5)),
+					Mitochondrion: parseFloat(parseFloat(strarr[4].substring(strarr[4].indexOf(':') + 1)).toFixed(5)),
+					Membrane: parseFloat(parseFloat(strarr[5].substring(strarr[5].indexOf(':') + 1)).toFixed(5)),
+					Endoplasmic: parseFloat(parseFloat(strarr[6].substring(strarr[6].indexOf(':') + 1)).toFixed(5)),
+					Plastid: parseFloat(parseFloat(strarr[7].substring(strarr[7].indexOf(':') + 1)).toFixed(5)),
+					Golgi_apparatus: parseFloat(parseFloat(strarr[8].substring(strarr[8].indexOf(':') + 1)).toFixed(5)),
+					Lysosome: parseFloat(parseFloat(strarr[9].substring(strarr[9].indexOf(':') + 1)).toFixed(5)),
+					Peroxisome: parseFloat(parseFloat(strarr[10].substring(strarr[10].indexOf(':') + 1)).toFixed(5)),
+					Predict: strarr[11].substring(strarr[11].indexOf(':') + 1)
+				};
+				var unic_pred_list = predict["Predict"].split('|');
+				if(unic_pred_list.length==1){
+					var j=0;
+					var unic_pred=unic_pred_list[j];
+					if(predictions[unic_pred] !== undefined){
+						predictions[unic_pred] += 1
+					}
+					else{
+						predictions[unic_pred] = 1
+					}
+				}
+				else{
+					for (var j=0; j<unic_pred_list.length-1; j++){
+						var unic_pred=unic_pred_list[j];
+						if(predictions[unic_pred] !== undefined){
+							predictions[unic_pred] += 1
+						}
+						else{
+							predictions[unic_pred] = 1
+						}
+					}
+				}
+			}
 			// console.log(cellular);
 			// console.log(arr3);
 
@@ -210,13 +255,27 @@ router.get("/jobs/:id", function (req, res) {
 				organellar.push(cur);
 			}
 			// console.log(organellar);
+			//console.log(predictions);
 
 			if (jobId == "example")
-				res.render("EXAMPLE", { names: names, seq: seq, weights: weights, cellular: cellular, organellar: organellar, jobId: jobId });
+				res.render("EXAMPLE", { names: names, seq: seq, weights: weights, cellular: cellular, organellar: organellar, jobId: jobId, predictions: predictions });
 			else
-				res.render("SHOW", { names: names, seq: seq, weights: weights, cellular: cellular, organellar: organellar, jobId: jobId });
+				res.render("SHOW", { names: names, seq: seq, weights: weights, cellular: cellular, organellar: organellar, jobId: jobId, predictions: predictions });
 		}
 	});
+});
+
+// Show visualisation
+router.get("/jobs/population/:combindedID", function (req, res) {
+	var predictionId = req.params.combindedID.toString().split('|')[1];
+	var jobId = req.params.combindedID.toString().split('|')[0];
+	res.render("POPULATION",{jobId:jobId, predictionId:predictionId});
+});
+
+router.get("/jobs/population2/:id/:predictionId", function (req, res) {
+	var predictionId = req.params.predictionId;
+	var jobId =  req.params.id;
+	res.render("POPULATION",{jobId:jobId, predictionId:predictionId});
 });
 
 // DOWNLOAD: download the result file
@@ -227,11 +286,11 @@ router.get("/jobs/download/:id", function (req, res) {
 
 // DELETE: delete the selected job
 router.post("/jobs/delete/:id", function (req, res) {
-	var jobId = req.params.id.substr(1);
+	var job = req.params.id.substr(1);
 	// console.log(job);
 
 	// delete jobs
-	jobInfo.findOne({ job_id: jobId }, function (err, doc) {
+	jobInfo.findOne({ _id: job }, function (err, doc) {
 		if (err)
 			return console.error(err);
 		if (doc != undefined) {
@@ -254,13 +313,13 @@ router.post("/jobs/delete/:id", function (req, res) {
 
 			var dFile = doc.file;
 			deleteFolder('data/results/' + doc.id);
-			fs.unlink(dFile, function (err) {
+			fs.unlink('data/upload/' + dFile, function (err) {
 				if (err) console.error(err);
 			});
 		}
-		return console.log("Delete files of the job: " + jobId);
+		return console.log("Delete files of the job: " + job);
 	});
-	jobInfo.deleteOne({ job_id: jobId }, function (err) {
+	jobInfo.deleteOne({ _id: job }, function (err) {
 		if (err)
 			return console.error(err);
 		console.log("Delete log of the job:" + job);
@@ -278,7 +337,6 @@ router.post("/jobs/delete/:id", function (req, res) {
  */
 function get_client_ip(req) {
 	var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-	console.log(ip);
 	ipStr = ip.split(':');
 	return ipStr[ipStr.length - 1];
 };

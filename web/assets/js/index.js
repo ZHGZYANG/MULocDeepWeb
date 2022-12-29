@@ -6,40 +6,40 @@
 
 /* ------------------------------- Map setting ------------------------------ */
 
-var map = new Datamap({
-    element: document.getElementById("map"),
-    geographyConfig: {
-      popupOnHover: false,
-      highlightOnHover: false
-    },
-    fills: {
-      defaultFill: '#ccc',
-      B: 'blue'
-    }
-  })
+// var map = new Datamap({
+//     element: document.getElementById("map"),
+//     geographyConfig: {
+//       popupOnHover: false,
+//       highlightOnHover: false
+//     },
+//     fills: {
+//       defaultFill: '#ccc',
+//       B: 'blue'
+//     }
+//   })
 
-  map.addPlugin("fadingBubbles", fadingBubbles);
+//   map.addPlugin("fadingBubbles", fadingBubbles);
 
-  drawBubbles = function (data) {
-    data.forEach(function (datum, index) {
+//   drawBubbles = function (data) {
+//     data.forEach(function (datum, index) {
 
-      setTimeout(function () {
+//       setTimeout(function () {
 
-        map.fadingBubbles([datum]);
+//         map.fadingBubbles([datum]);
 
-      }, index * 100);
+//       }, index * 100);
 
-    });
-  }
+//     });
+//   }
 
-  var bubblesURL = "/process/location/"
-  $.get(bubblesURL, function (bubbles_list, status) {
-    drawBubbles(bubbles_list);
-    var sleep = (bubbles_list.length - 1) * 100;
-    setInterval(function () {
-      drawBubbles(bubbles_list);
-    }, sleep);
-  })
+//   var bubblesURL = "/process/location/"
+//   $.get(bubblesURL, function (bubbles_list, status) {
+//     drawBubbles(bubbles_list);
+//     var sleep = (bubbles_list.length - 1) * 100;
+//     setInterval(function () {
+//       drawBubbles(bubbles_list);
+//     }, sleep);
+//   })
 
 
 /* ----------------------- Get and show statistic data ---------------------- */
@@ -47,6 +47,7 @@ var map = new Datamap({
   $("#userNumber").fadeIn(1000);
   var statisticUserURL = '/process/statistic/users';
   $.get(statisticUserURL, function (data, status) {
+    console.log(data);
     $("#userNumber").numberAnimate({num: data.user, speed:3000, symbol:","});
   });
 
@@ -54,6 +55,7 @@ var map = new Datamap({
   $("#queryNumber").fadeIn(2000);
   var statisticQueryURL = '/process/statistic/querys';
   $.get(statisticQueryURL, function (data, status) {
+    console.log(data);
     $("#queryNumber").numberAnimate({num: data.querys, speed:4000, symbol:","});
   });
 
@@ -61,5 +63,6 @@ var map = new Datamap({
   $("#proteinsNumber").fadeIn(3000);
   var statisticQueryURL = '/process/statistic/proteins';
   $.get(statisticQueryURL, function (data, status) {
+    console.log(data);
     $("#proteinsNumber").numberAnimate({num: data.proteins, speed:4000, symbol:","});
   });

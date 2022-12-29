@@ -38,6 +38,7 @@ mongoose.connect('mongodb://mulocdeepdb:65528/mulocdeep2',(err)=>{
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.use(express.static('assets'))
+app.use('/data', express.static(__dirname + '/data'));
 
 /* --------------------------------- Routers -------------------------------- */
 app.use(indexRoutes);
