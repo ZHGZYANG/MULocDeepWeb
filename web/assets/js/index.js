@@ -66,3 +66,7 @@
     console.log(data);
     $("#proteinsNumber").numberAnimate({num: data.proteins, speed:4000, symbol:","});
   });
+
+window.addEventListener('resize', function(){
+    location.reload(true);
+}, true);
