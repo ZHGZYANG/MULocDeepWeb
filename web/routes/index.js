@@ -57,6 +57,11 @@ router.get("/", function (req, res) {
 });
 
 
+// welcome card and map
+router.get("/welcomecard", function (req, res) {
+	res.render("WELCOMECARD");
+});
+
 
 
 // Other tools page
