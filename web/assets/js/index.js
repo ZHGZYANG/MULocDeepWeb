@@ -67,7 +67,12 @@
     // $("#proteinsNumber").numberAnimate({num: data.proteins, speed:4000, symbol:","});
   // });
   
+  // window.addEventListener('resize', function(){
+    // location.reload(true);
+  // }, true);
+
   
 window.addEventListener('resize', function(){
     document.getElementById('welcomecard').contentDocument.location.reload(true);
 }, true);
+
