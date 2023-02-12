@@ -91,7 +91,7 @@ router.get("/jobs/:id", function (req, res) {
 			// -----------------
 			var names = [];
 			var seq = [];
-			var arr = fs.readFileSync('data/upload/' + jobId + '.fa').toString().replace(/^[\n|\r\n]*|[\n|\r\n]*$/g, '').split(/\r\n|\n\r|[\n\r]/);
+			var arr = fs.readFileSync('data/upload/' + jobId + '.fa_tem').toString().replace(/^[\n|\r\n]*|[\n|\r\n]*$/g, '').split(/\r\n|\n\r|[\n\r]/);
 			for (var i = 0; i < arr.length; i++)
 				if (i % 2 == 0) {
 					names.push(arr[i]);

@@ -32,7 +32,15 @@ mongoose.connect('mongodb://mulocdeepdb:65528/mulocdeep2',(err)=>{
 })
 // Local
 //mongoose.connect("mongodb://localhost:65522/mulocdeep2");
-
+const fake_job = [{
+    nickName: "fake"
+}];
+const fake_user = [{
+    query: 1,
+	  proteins: 1
+}];
+// jobInfo.insertMany(fake_job);
+userInfo.insertMany(fake_user);
 /* -------------------------- Express configuration ------------------------- */
 // app.enable('trust proxy');
 app.use(bodyParser.urlencoded({ extended: true }));

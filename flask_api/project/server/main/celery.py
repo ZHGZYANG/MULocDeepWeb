@@ -22,7 +22,7 @@ UPLOAD_FOLDER = os.getenv("UPLOAD_FOLDER")
 OUTPUT_FOLDER = os.getenv("OUTPUT_FOLDER")
 MAX_CONTENT_LENGTH = os.getenv("MAX_CONTENT_LENGTH")
 MAXCAPACITY = int(os.getenv("MAXCAPACITY"))
-ALLOWED_EXTENSIONS = {'txt', 'fa'}
+ALLOWED_EXTENSIONS = {'txt', 'fa', 'fasta'}
 
 
 def allowed_file(filename):
