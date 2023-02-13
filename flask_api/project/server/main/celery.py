@@ -50,7 +50,10 @@ def get_protain_info(filepath):
     sequence = f.read()
     f.close()   
     fileSize = os.path.getsize(filepath)
-    proteins = len(sequence.strip().split('>')) - 1
+    if not '>' in sequence:
+        proteins = 1
+    else:
+        proteins = len(sequence.strip().split('>')) - 1
     return sequence, fileSize, proteins
 
 
@@ -100,8 +103,8 @@ def predict_sequences():
     if proteins > 200:
         return jsonify({'error': 'The number of sequences ' + proteins + ' is out of the limit: 200.'}), 400
     
-    if (not is_fasta(filepath)):
-        return jsonify({'error': ' The file format should be FASTA!'}), 400
+    # if (not is_fasta(filepath)):
+    #     return jsonify({'error': ' The file format should be FASTA!'}), 400
     
     print('New job is created, the job_id is： ', job_id)
     
@@ -198,12 +201,13 @@ def predict_file():
     job_id, filepath, output_dir = get_unique_id(ipAddress)
     # lat, lon = get_geolocation(ipAddress)
        
-    if sequences_file and allowed_file(sequences_file.filename):
-        # filename = secure_filename(sequences_file.filename)
-        # filepath = os.path.join(input_dir, filename)
-        sequences_file.save(filepath)
-    else:
-        return jsonify({'error': 'This file extension is not allowed!'}), 415
+    # if sequences_file and allowed_file(sequences_file.filename):
+    #     # filename = secure_filename(sequences_file.filename)
+    #     # filepath = os.path.join(input_dir, filename)
+    #     sequences_file.save(filepath)
+    # else:
+    #     return jsonify({'error': 'This file extension is not allowed!'}), 415
+    sequences_file.save(filepath)
     
     sequence, fileSize, proteins = get_protain_info(filepath)
     
@@ -213,8 +217,8 @@ def predict_file():
     if proteins > 200:
         return jsonify({'error': 'The number of sequences ' + proteins + ' is out of the limit: 200.'}), 400
     
-    if (not is_fasta(filepath)):
-        return jsonify({'error': ' The file format should be FASTA!'}), 400
+    # if (not is_fasta(filepath)):
+    #     return jsonify({'error': ' The file format should be FASTA!'}), 400
     
     print('New job is created, the job_id is： ', job_id)
     

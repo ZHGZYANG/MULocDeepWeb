@@ -6,20 +6,6 @@
 
 <% include partials/header %>
 <link rel="stylesheet" type="text/css" href="/css/index.css">
-<style>
-.mt-number-animate .mt-number-animate-dom {
-    width: 10px;
-}
-
-.mt-number-animate .mt-number-animate-dot {
-    width: 10px;
-    font-weight: 900;
-    font-size: x-small;
-    position: relative;
-    top: -11px;
-}
-</style>
-
     <div class="wrapper">
 
         <nav class="navbar navbar-expand-md navbar-dark bg-primary">
@@ -74,57 +60,7 @@
                         <!-- <p class="d-none d-lg-block"></p> -->
                     </div>
                     <div class="container col-4" style="height: fit-content;">
-                        <!-- <img src="https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1150&q=80"
-                                            alt="a map" style="width:80%;height:80%;"> -->
-                        <!-- Inserting Map page into home page as a Div -->
-                        <div id="map-cont">
-                            <div id="map0" data-step="7" data-intro="Our users around the world!">
-                                <!-- <script type="text/javascript" id="clustrmaps" src="//clustrmaps.com/map_v2.js?d=4F_B7ZQQv_QhwrIZMRG9R59R8JummliEmeOE3oU2Ito"></script> -->
-                                <!-- <script type="text/javascript" id="clustrmaps" src="//clustrmaps.com/map_v2.js?cl=ffffff&w=300&t=n&d=4F_B7ZQQv_QhwrIZMRG9R59R8JummliEmeOE3oU2Ito&co=73c5ff"></script> -->
-                                <script type='text/javascript' id='clustrmaps' src='//cdn.clustrmaps.com/map_v2.js?cl=ffffff&w=a&t=n&d=-w10MsPItOkrtOdxtNB4gHWaETvglJEv8QX7vqXzRH4&co=b1dfff'></script>
-                            </div>
-                            <!-- <div id="map" data-step="1" data-intro="Our users around the world!"
-                                style="background-color: white !important;"></div> -->
-                
-                            <!-- <div class="container border shadow-lg col-0 col-lg-4 map-welcome" id="welcomeCard" data-step="2"
-                                data-intro="The statistic data of our website.">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <div class="content text-center">
-                                            <h6 class="">MULocDeep</h6>
-                                            <p style="margin: 0px;">
-                                                A protein localization prediction tool at sub-cellular and sub-organellar levels
-                                            </p>
-                                            <hr style="margin: 0px;">
-                                            <h6 id="userNumHead" style="display: none; margin: 0px; font-size: xx-small;"> The number of
-                                                total users</h6>
-                                            <div id="userNumber" style="display: none; height: 12px;"></div>
-                                            <h6 id="queryNumHead" style="display: none; margin: 0px; font-size: xx-small;"> The number
-                                                of total queries</h6>
-                                            <div id="queryNumber" style="display: none; height: 12px;"></div>
-                                            <h6 id="proteinsNumHead" style="display: none; margin: 0px; font-size: xx-small;"> The
-                                                number of total proteins</h6>
-                                            <div id="proteinsNumber" style="display: none; height: 12px;"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> -->
-                            <div class="container border shadow-lg col-0 col-lg-4" id="welcomeCard" data-step="6" data-intro="The statistic data of our website.">
-                                <div class="row">
-                                  <div class="col-lg-12">
-                                    <div class="content text-center">
-                            
-                                      <h6 id="userNumHead" style="display: none;font-size: 70%;" class="mb-0"> The number of total users</h6>
-                                      <div id="userNumber" style="display: none;"></div>
-                                      <h6 id="queryNumHead" style="display: none;font-size: 70%;" class="mb-0"> The number of total queries</h6>
-                                      <div id="queryNumber" style="display: none;"></div>
-                                      <h6 id="proteinsNumHead" style="display: none;font-size: 70%;" class="mb-0"> The number of total proteins</h6>
-                                      <div id="proteinsNumber" style="display: none;"></div>
-                                    </div>
-                                  </div>
-                                </div>
-                            </div>
-                        </div>
+                        <iframe id="welcomecard" src="/welcomecard" frameBorder="0" scrolling="no" allowtransparency="true"></iframe>
                     </div>
                     <!-- <div class="container col-1">
                             <h6 id="userNumHead" style="display: none;"> The number of total users</h6>
@@ -166,9 +102,8 @@
                                         <label for="sequenceInput">Sequence</label>
                                         <textarea class="form-control" id="sequences" name="sequences" rows="6"
                                             aria-describedby="sequenceHelp" required></textarea>
-                                        <small id="sequenceHelp" class="form-text text-muted">The sequence(s) must in
-                                            FASTA format
-                                            (maximum 200 sequences).
+                                        <small id="sequenceHelp" class="form-text text-muted">Multiple sequences must be seperated by ids which are new lines started with '>'. If there
+                                            is no symbol '>', the whole text will be treated as one sequence. (maximum 200 sequences).
                                         </small>
                                     </div>
                                 </div>
@@ -234,9 +169,8 @@
                                             <label id="fileLabel" class="custom-file-label text-truncate"
                                                 for="sequences_file">Choose
                                                 file</label>
-                                            <small id="fileHelp" class="form-text text-muted">The file uploaded should
-                                                contains only
-                                                protein sequence(s) in FASTA format (maximum 200 sequences).</small>
+                                            <small id="fileHelp" class="form-text text-muted">Multiple sequences must be seperated by ids which are new lines started with '>'. If there
+                                                is no symbol '>', the whole text will be treated as one sequence. (maximum 200 sequences).</small>
                                         </div>
                                     </div>
                                 </div>

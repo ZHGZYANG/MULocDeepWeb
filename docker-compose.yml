@@ -50,6 +50,7 @@ services:
     networks:
       - muloc-network
 
+#remove when using Apache2
   nginx-gateway:
     image: nginx:stable-alpine
     volumes:

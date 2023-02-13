@@ -43,30 +43,26 @@
 
 
 /* ----------------------- Get and show statistic data ---------------------- */
-  // $("#userNumHead").fadeIn(1000);
-  // $("#userNumber").fadeIn(1000);
-  // var statisticUserURL = '/process/statistic/users';
-  // $.get(statisticUserURL, function (data, status) {
-  //   console.log(data);
-  //   $("#userNumber").numberAnimate({num: data.user, speed:3000, symbol:","});
-  // });
+$("#userNumHead").fadeIn(1000);
+$("#userNumber").fadeIn(1000);
+var statisticUserURL = '/process/statistic/users';
+$.get(statisticUserURL, function (data, status) {
+  console.log(data);
+  $("#userNumber").numberAnimate({num: data.user, speed:3000, symbol:","});
+});
 
-  // $("#queryNumHead").fadeIn(2000);
-  // $("#queryNumber").fadeIn(2000);
-  // var statisticQueryURL = '/process/statistic/querys';
-  // $.get(statisticQueryURL, function (data, status) {
-  //   console.log(data);
-  //   $("#queryNumber").numberAnimate({num: data.querys, speed:4000, symbol:","});
-  // });
+$("#queryNumHead").fadeIn(2000);
+$("#queryNumber").fadeIn(2000);
+var statisticQueryURL = '/process/statistic/querys';
+$.get(statisticQueryURL, function (data, status) {
+  console.log(data);
+  $("#queryNumber").numberAnimate({num: data.querys, speed:4000, symbol:","});
+});
 
-  // $("#proteinsNumHead").fadeIn(3000);
-  // $("#proteinsNumber").fadeIn(3000);
-  // var statisticQueryURL = '/process/statistic/proteins';
-  // $.get(statisticQueryURL, function (data, status) {
-  //   console.log(data);
-  //   $("#proteinsNumber").numberAnimate({num: data.proteins, speed:4000, symbol:","});
-  // });
-
-  window.addEventListener('resize', function(){
-    document.getElementById('welcomecard').contentDocument.location.reload(true);
-}, true);
+$("#proteinsNumHead").fadeIn(3000);
+$("#proteinsNumber").fadeIn(3000);
+var statisticQueryURL = '/process/statistic/proteins';
+$.get(statisticQueryURL, function (data, status) {
+  console.log(data);
+  $("#proteinsNumber").numberAnimate({num: data.proteins, speed:4000, symbol:","});
+});

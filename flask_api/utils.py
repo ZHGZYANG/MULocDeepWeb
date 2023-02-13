@@ -355,28 +355,43 @@ def var_model(train_x):
 
 #Change mulit lines seq to one seq
 def format(seq):
-    data = seq.strip().split('>')
-    res = ""
-    for i in range(len(data)):
-        fasta = data[i];
-        if i==0 and fasta:
-            sys.exit("The description of query must begin with \'>\'")
-        if not fasta:
-            continue;
-        lines = fasta.splitlines()
-        res = res + '>' + lines[0] + '\n'
-        lines=lines[1:]
-        # join the array back into a single string without newlines and
-        # trailing or leading spaces
-        fasta="".join(lines).strip()
+    if not '>' in seq:
+        data=seq.strip()
+        res = ""
+        fasta = data
         if not fasta:
             sys.exit("Query must contain amino acid code sequence.")
+        lines = fasta.splitlines()
+        res = res + '>Anonymous Protein'  + '\n'
+        fasta="".join(lines).strip()
+        fasta=fasta.replace(" ", "")
         if not is_allowed_specific_char(fasta):
-            sys.exit("Sequences must be in valid amino acid code(A, C, D, E, F, G, H, I, K, L, M, N, P, Q, R, S, T, U, V, W, Y) without any space.")
+                sys.exit("Anonymous Protein: sequences must be in valid amino acid code(A, C, D, E, F, G, H, I, K, L, M, N, P, Q, R, S, T, V, W, Y, U, O, B, J, X, Z).")
         res = res + fasta + '\n'
+    else:
+        data = seq.strip().split('>')
+        res = ""
+        for i in range(len(data)):
+            fasta = data[i];
+            if i==0 and fasta:
+                sys.exit("The description of query must begin with \'>\'")
+            if not fasta:
+                continue;
+            lines = fasta.splitlines()
+            res = res + '>' + lines[0] + '\n'
+            lines=lines[1:]
+            # join the array back into a single string without newlines and
+            # trailing or leading spaces
+            fasta="".join(lines).strip()
+            fasta=fasta.replace(" ", "")
+            if not fasta:
+                sys.exit("Query must contain amino acid code sequence.")
+            if not is_allowed_specific_char(fasta):
+                sys.exit(lines[0]+": sequences must be in valid amino acid code(A, C, D, E, F, G, H, I, K, L, M, N, P, Q, R, S, T, V, W, Y, U, O, B, J, X, Z).")
+            res = res + fasta + '\n'
     return res.strip();
 
 def is_allowed_specific_char(string):
-    charRe = re.compile(r'[^ACDEFGHIKLMNPQRSTUVWY]')
+    charRe = re.compile(r'[^ABCDEFGHIJKLMNOPQRSTUVWXYZ]')
     string = charRe.search(string)
     return not bool(string)
