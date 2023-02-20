@@ -155,10 +155,6 @@ font-size: x-small;
 } */
 }
 
-#fileLabel{
-    margin-top: 15px;
-}
-
-#sequences_file{
-    margin-bottom: 50px;
+#file-selector{
+    margin-bottom: 70px;
 }

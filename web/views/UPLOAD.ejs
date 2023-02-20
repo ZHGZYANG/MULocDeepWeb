@@ -161,10 +161,10 @@
 
                         <div class="tab-pane fade" id="pills-File" role="tabpanel" aria-labelledby="pills-File-tab">
                             <form id="form_file" class="prediction" action="/tasks/predict_file" method="POST" enctype="multipart/form-data">
-                                <div class="form-row">
-                                    <div class="form-group col-lg-12">
+                                <div class="form-row" id="file-selector">
+                                    <div class="form-group col-12">
                                         <p>Upload file</p>
-                                        <div class="form-group col-12">
+                                        <div class="custom-file">
                                             <input type="file" class="custom-file-input" id="sequences_file"
                                                 name="sequences_file" aria-describedby="fileHelp"
                                                 onchange="checkFileValid()" required>
