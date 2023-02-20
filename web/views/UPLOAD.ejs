@@ -81,7 +81,7 @@
             <div class="row justify-content-center">
 
                 <!-- left as col -->
-                <div class="container border rounded shadow-lg col-6">
+                <div class="container border rounded shadow-lg col-sm-7 mb-5">
                     <ul class="nav nav-pills mb-3 pt-3" id="pills-tab" role="tablist" data-step="8" data-intro="Paste protein sequences below or upload a file of protein sequences to predict">
                         <li class="nav-item">
                             <a class="nav-link active" id="pills-Sequence-tab" data-toggle="pill" href="#pills-Sequence"
@@ -100,11 +100,11 @@
                                 <div class="form-row">
                                     <div class="form-group col-12">
                                         <label for="sequenceInput">Sequence</label>
-                                        <textarea class="form-control" id="sequences" name="sequences" rows="6"
+                                        <textarea class="form-control" id="sequences" name="sequences" rows="3"
                                             aria-describedby="sequenceHelp" required></textarea>
-                                        <small id="sequenceHelp" class="form-text text-muted">Multiple sequences must be seperated by ids which are new lines started with '>'. If there
+                                        <p id="sequenceHelp" class="form-text text-muted">Multiple sequences must be seperated by ids which are new lines started with '>'. If there
                                             is no symbol '>', the whole text will be treated as one sequence. (maximum 200 sequences).
-                                        </small>
+                                        </p>
                                     </div>
                                 </div>
                                 <div class="form-row">
@@ -138,7 +138,7 @@
                                         <label for="nickName">Job Nickname</label>
                                         <input class="form-control" id="nickName" name="nickName"
                                             aria-describedby="nickNameHelp1">
-                                        <small id="nickNameHelp1" class="form-text text-muted">Optional</small>
+                                        <p id="nickNameHelp1" class="form-text text-muted">Optional</p>
                                     </div>
                                 </div>
                                 <div class="form-row">
@@ -146,31 +146,33 @@
                                         <label for="email"> Email address</label>
                                         <input type="email" class="form-control" id="email" name="email"
                                             aria-describedby="emailHelp1" placeholder="Enter email">
-                                        <small id="emailHelp1" class="form-text text-muted">Optional. We will notify you
+                                        <p id="emailHelp1" class="form-text text-muted">Optional. We will notify you
                                             through email when the job is done. (We'll never share your email with
-                                            anyone else.)</small>
+                                            anyone else.)</p>
                                     </div>
                                 </div>
+                                <div class="text-center">
                                 <button type="submit" class="btn btn-primary submitBtn" id="btnSubmitSequences">Submit</button>
                                 <button type="reset" class="btn btn-secondary">Reset</button>
                                 <input type="button" id="sample" class="btn btn-secondary" value="Load Example Sequences" />
+                                </div>
                             </form>
                         </div>
 
                         <div class="tab-pane fade" id="pills-File" role="tabpanel" aria-labelledby="pills-File-tab">
                             <form id="form_file" class="prediction" action="/tasks/predict_file" method="POST" enctype="multipart/form-data">
                                 <div class="form-row">
-                                    <div class="form-group col-12 col-lg-6">
+                                    <div class="form-group col-lg-12">
                                         <p>Upload file</p>
-                                        <div class="custom-file">
+                                        <div class="form-group col-12">
                                             <input type="file" class="custom-file-input" id="sequences_file"
                                                 name="sequences_file" aria-describedby="fileHelp"
                                                 onchange="checkFileValid()" required>
                                             <label id="fileLabel" class="custom-file-label text-truncate"
                                                 for="sequences_file">Choose
                                                 file</label>
-                                            <small id="fileHelp" class="form-text text-muted">Multiple sequences must be seperated by ids which are new lines started with '>'. If there
-                                                is no symbol '>', the whole text will be treated as one sequence. (maximum 200 sequences).</small>
+                                            <p id="fileHelp" class="form-text text-muted">Multiple sequences must be seperated by ids which are new lines started with '>'. If there
+                                                is no symbol '>', the whole text will be treated as one sequence. (maximum 200 sequences).</p>
                                         </div>
                                     </div>
                                 </div>
@@ -205,7 +207,7 @@
                                         <label for="nickname_f">Job NickName</label>
                                         <input class="form-control" id="nickname_f" name="nickname_f"
                                             aria-describedby="nickNameHelp2">
-                                        <small id="nickNameHelp2" class="form-text text-muted">Optional</small>
+                                        <p id="nickNameHelp2" class="form-text text-muted">Optional</p>
                                     </div>
                                 </div>
                                 <div class="form-row">
@@ -213,13 +215,15 @@
                                         <label for="email_f">Email address</label>
                                         <input type="email" class="form-control" id="email_f" name="email_f"
                                             aria-describedby="emailHelp2" placeholder="Enter email">
-                                        <small id="emailHelp2" class="form-text text-muted">Optional. We will notify you
+                                        <p id="emailHelp2" class="form-text text-muted">Optional. We will notify you
                                             through email when the job is done. (We'll never share your email with
-                                            anyone else.)</small>
+                                            anyone else.)</p>
                                     </div>
                                 </div>
+                                <div class="text-center">
                                 <button type="submit" class="btn btn-primary submitBtn" id="btnSubmitFile">Submit</button>
                                 <button id="reset" type="reset" class="btn btn-secondary">Reset</button>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -227,8 +231,8 @@
                 </div>
 
 
-                <div class="container col-5 offset-md-1">
-                    <div class="container col  mb-2">
+                <div class="container col-sm-5">
+                    <div class="container col mb-2">
                         <h5 class="mb-0 font-weight-bold bg-light">What's new</h5>
                         <hr class="mt-0">
                         <div class="whatsnew">
