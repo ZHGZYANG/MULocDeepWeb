@@ -120,29 +120,34 @@
         </tr> -->
           <% docs.forEach(function(element){ %>
           <tr class="table-primary">
-            <th scope="row"><a href="/jobs/:<%= element.job_id %>" style="color:black;text-decoration:none;">
-                <%= element.job_id %></a></th>
+            <th scope="row">
+                <% if (element.status === "Done"){%>
+                    <a href="/jobs/:<%= element.job_id %>" style="color:black;text-decoration:none;"><%= element.job_id %></a>
+                <% } else {%>
+                    <a href="#" style="color:black;text-decoration:none;"><%= element.job_id %></a>
+                <%}%>
+            </th>
             <td><%= element.nickName%></td>
-            <td><%= element.submittedTime%></td>
+            <td><%= new Date(element.submittedTime + " GMT").toLocaleString()%></td>
             <td><%= element.status%>
-              <% if (element.status === 'Done'){%>
+              <% if (element.status === "Done"){%>
               <i class="fas fa-check"></i></td>
-            <% } else if (element.status === 'Processing' || element.status === 'queued') {%>
+            <% } else if (element.status === "Processing" || element.status === "queued") {%>
             <div class="spinner-border spinner-border-sm" role="status">
               <span class="sr-only">Loading...</span>
             </div>
-            <%} else if (element.status === 'error'){%>
+            <%} else if (element.status === "error"){%>
             <i class="fas fa-times"></i>
             <%}%>
           <td>
-            <% if (element.status === 'Done'){%>
+            <% if (element.status === "Done"){%>
               <a class="btn btn-primary" href="/jobs/:<%= element.job_id %>" style="color:white;text-decoration:none;"><i class="far fa-hand-point-up"></i></a>
               <button class="btn btn-danger" onclick="deleteTr(this)"><i class="far fa-trash-alt"></i></button>
-            <% } else if (element.status === 'Processing' || element.status === 'queued') { %>
+            <% } else if (element.status === "Processing" || element.status === "queued") { %>
               <!-- <a class="btn btn-primary" href="/jobs/:<%= element.job_id %>" style="color:white;text-decoration:none;" ><i class="far fa-hand-point-up"></i></a> -->
               <button class="btn btn-danger" onclick="deleteTr(this)" disabled><i class="far fa-hand-point-up"></i></button>
               <button class="btn btn-danger" onclick="deleteTr(this)" disabled><i class="far fa-trash-alt"></i></button>
-            <%} else if (element.status === 'error'){%>
+            <%} else if (element.status === "error"){%>
               <!-- <a class="btn btn-primary" href="/jobs/:<%= element.job_id %>" style="color:white;text-decoration:none;"><i class="far fa-hand-point-up"></i></a> -->
               <button class="btn btn-danger" onclick="deleteTr(this)" disabled><i class="far fa-hand-point-up"></i></button>              
               <button class="btn btn-danger" onclick="deleteTr(this)"><i class="far fa-trash-alt"></i></button>
