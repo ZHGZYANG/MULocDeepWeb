@@ -1,0 +1,13 @@
+#form-div{
+    margin: 5px 20%;
+}
+#title {
+    text-align:center;
+    margin: 55px auto;
+}
+#btnSubmitReport {
+    margin: 10px auto;
+}
+.required {
+    color: red;
+}

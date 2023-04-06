@@ -12,7 +12,7 @@ setInterval('myrefresh()', 20000); //20s refresh
 
 $(document).ready(function () {
     $('#table').DataTable({
-        "order": [[2, "desc"]]
+        "order": [[2, "desc"]],
     });
     $('.dataTables_length').addClass('bs-select');
 });

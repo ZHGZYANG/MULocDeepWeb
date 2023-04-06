@@ -129,6 +129,12 @@ $(".selectpicker").change(function () {
         cellularContentBody.classList.add("card-body");
         cellularContentBody.setAttribute("id", "cellular_content_" + id);
 
+        var cellularContentBodyTip = document.createElement("p");
+        var tip = document.createTextNode('*Drag the chart to zoom in and then click buttons in the upper right corner to move or zoom out ');
+        cellularContentBodyTip.style.cssText = 'font-size:4px;color:grey;float:right';
+        cellularContentBodyTip.appendChild(tip);
+        cellularContent.appendChild(cellularContentBodyTip);
+
         var cellularChartContainer = document.createElement("div");
         cellularContentBody.appendChild(cellularChartContainer);
         cellularChartContainer.setAttribute("id", "cellularChartContainer_" + id);
@@ -258,6 +264,12 @@ $(".selectpicker").change(function () {
         organellarContent.appendChild(organellarContentBody);
         organellarContentBody.classList.add("card-body");
         organellarContentBody.setAttribute("id", "organellar_content_" + id);
+
+        var organellarContentBodyTip = document.createElement("p");
+        var tip = document.createTextNode('*Drag the chart to zoom in and then click buttons in the upper right corner to move or zoom out ');
+        organellarContentBodyTip.appendChild(tip);
+        organellarContentBodyTip.style.cssText = 'font-size:4px;color:grey;float:right';
+        organellarContent.appendChild(organellarContentBodyTip);
 
         var organellarChartContainer = document.createElement("div");
         organellarContentBody.appendChild(organellarChartContainer);
@@ -390,6 +402,12 @@ $(".selectpicker").change(function () {
         weightsContent.appendChild(weightsContentBody);
         weightsContentBody.classList.add("card-body");
         weightsContentBody.setAttribute("id", "weights_content_" + id);
+
+        var weightsContentBodyTip = document.createElement("p");
+        var tip = document.createTextNode('*Drag the chart to zoom in and then click buttons in the upper right corner to move or zoom out ');
+        weightsContentBodyTip.style.cssText = 'font-size:4px;color:grey;float:right';
+        weightsContentBodyTip.appendChild(tip);
+        weightsContent.appendChild(weightsContentBodyTip);
 
         var chartContainer = document.createElement("div");
         weightsContentBody.appendChild(chartContainer);
